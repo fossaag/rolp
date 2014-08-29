@@ -1,0 +1,103 @@
+@import url(../reindeer/styles.css);
+/* Using the old default theme (reindeer) as the basis for now */
+
+/* Add some padding to the tree */
+.v-window-login .v-window-closebox {
+	display: none;
+}
+
+.v-window .v-window-closebox {
+	display: none;
+}
+
+.v-required-field-indicator {
+	color: black;
+	padding-left: 2px;
+}
+
+.v-table {
+	height: 100% !important;
+}
+
+.v-form .v-disabled {
+	color: #000000;
+	font-style: normal;
+	opacity: 1;
+	filter: none;
+	text-shadow: 0px 0px #ffffff;
+}
+
+.v-disabled {
+	border: none;
+}
+
+.v-app {
+	background: none repeat scroll 0 0 #F8F8FF;
+}
+
+.v-window-contents {
+	background: none repeat scroll 0 0 #F8F8FF;
+}
+
+.v-table-row {
+	background: #ffffff;
+}
+
+.v-table-row-odd {
+	background: #E1EDF2;
+}
+
+.v-textfield-loginUser {
+	text-align: right;
+	width: 100%;
+}
+
+.v-textfield {
+	width: 80%;
+}
+
+.v-Notification-refreshNotification h1 {
+	font-size: 15px;
+}
+
+.v-Notification-refreshNotification {
+	background: #FFFF99;
+	color: black;
+}
+
+.v-textarea {
+	height: auto !important;
+}
+
+textarea.v-textarea-readonly, .black textarea.v-textarea-readonly {
+	background: none repeat scroll 0 0 #F8F8FF;
+	border: thin solid #E1EDF2;
+}
+
+.v-caption .v-captiontext {
+	float: right;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.v-nativebutton-blackboardButtonKlassenlehrer {
+    border: none;
+    background: url(images/KlassenlehrerDashboardButton.png) no-repeat;
+    width: 342px;
+    height: 160px;
+    cursor: default;
+}
+
+.v-nativebutton-blackboardButtonFachlehrer {
+    border: none;
+    vertical-align: center;
+    background: url(images/FachlehrerDashboardButton.png) no-repeat;
+    width: 342px;
+    height: 160px;
+    cursor: default;
+}
+
+.v-nativebutton.v-pressed, .v-nativebutton:ACTIVE, .v-nativebutton:FOCUS{
+	 outline: none;
+	 cursor: default;
+}
