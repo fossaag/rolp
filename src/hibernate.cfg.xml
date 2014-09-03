@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost/rolp</property>
+  <property name="hibernate.connection.username">rolp</property>
+  <property name="hibernate.connection.password">plor</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <property name="hibernate.current_session_context_class">thread</property>
+  <property name="hibernate.hbm2ddl.auto">update</property>
+  <property name="hibernate.show_sql">false</property>
+  <property name="hibernate.connection.shutdown">true</property>
+  <property name="hibernate.format_sql">false</property>
+  <property name="hibernate.use_sql_comments">false</property>
+  <property name="hibernate.c3p0.acquire_increment">5</property>
+  <property name="hibernate.c3p0.idle_test_period">10</property>
+  <property name="hibernate.c3p0.max_size">20</property>
+  <property name="hibernate.c3p0.max_statements">50</property>
+  <property name="hibernate.c3p0.min_size">5</property>
+  <property name="hibernate.c3p0.timeout">1800</property>
+  <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+  <mapping class="org.fossa.vaadin.auth.data.FossaUserPojo"/>
+  <mapping class="org.fossa.rolp.data.schueler.SchuelerPojo"/>
+  <mapping class="org.fossa.rolp.data.klasse.KlassePojo"/>
+  <mapping class="org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojo"/>
+  <mapping class="org.fossa.rolp.data.fach.FachPojo"/>
+  <mapping class="org.fossa.rolp.data.fach.fachtyp.FachtypPojo"/>
+  <mapping class="org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojo"/>
+  <mapping class="org.fossa.rolp.data.lehrer.LehrerPojo"/>
+  <mapping class="org.fossa.rolp.data.lehrer.LehrerBlogPojo"/>
+  <mapping class="org.fossa.rolp.data.einschaetzung.EinschaetzungPojo"/>
+  <mapping class="org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerPojo"/>
+  <mapping class="org.fossa.rolp.data.leb.LebSettingsPojo"/>
+  <mapping class="org.fossa.rolp.data.fach.pflichtfach.PflichtfachsuchwortPojo"/>
+  <mapping class="org.fossa.rolp.data.ConfigPojo"/>
+ </session-factory>
+</hibernate-configuration>
