@@ -21,6 +21,7 @@ import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.leb.LebSettingsContainer;
 import org.fossa.rolp.data.lehrer.LehrerContainer;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.demo.DemoWelcomeScreen;
 import org.fossa.rolp.ui.dashboard.AdminDashboard;
 import org.fossa.rolp.ui.dashboard.FachlehrerDashboard;
 import org.fossa.rolp.ui.dashboard.KlassenlehrerDashboard;
@@ -30,6 +31,7 @@ import org.fossa.rolp.ui.fach.SchuelerfachlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.FachschuelerlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.SchuelerlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.versetzungsvermerk.VersetzungsvermerklisteAnzeigen;
+import org.fossa.rolp.util.Config;
 import org.fossa.vaadin.FossaApplication;
 import org.fossa.vaadin.auth.FossaAuthorizer;
 import org.fossa.vaadin.auth.data.FossaUserLaso;
@@ -63,19 +65,25 @@ public class RolpApplication extends FossaApplication implements Button.ClickLis
 
 	private AdminDashboard adminDashboard;
 	
-	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp.png";
+	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp_logo.png";
 	
 	@Override
     public void init() {
 		setMainWindow(new Window("Rolp"));
 		setTheme("rolp");
-		authorizer.checkAuthorization(this.getClass().getSimpleName());
+		String appSeverity = Config.getAppSeverity();
+		if (appSeverity.equals("prod")) {			
+			authorizer.checkAuthorization();
+		} else if (appSeverity.equals("demo")) {
+			demoWelcome();
+		}
 	}
-	
+
 	@Override
 	public void buildMainLayout() {
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
+		logo.setWidth("100px");
 		headlineApp.addComponent(logo,"logo");
 		headlineApp.addComponent(authorizerLayout,"authorizerLayout");
 		headlineApp.addStyleName("headlineApp");
@@ -209,5 +217,10 @@ public class RolpApplication extends FossaApplication implements Button.ClickLis
 	
 	protected void openSubwindow(FossaWindow window) {
 		getMainWindow().addWindow(window);
+	}
+	
+	public void demoWelcome() {
+		getMainWindow().addWindow(new DemoWelcomeScreen(this, authorizer));
+		
 	}
 }

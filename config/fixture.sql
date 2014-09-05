@@ -105,4 +105,5 @@ INSERT INTO `static_config` (`propkey`, `propvalue`) VALUES
 ('relativeNormalFontPath', '/VAADIN/themes/rolp/fonts/OpenSans-Regular.ttf'),
 ('relativeThinFontPath', '/VAADIN/themes/rolp/fonts/OpenSans-Light.ttf'),
 ('relativeBoldFontPath', '/VAADIN/themes/rolp/fonts/OpenSans-Bold.ttf'),
-('relativeLogoPath', '/VAADIN/themes/rolp/images/logo.PNG');
+('relativeLogoPath', '/VAADIN/themes/rolp/images/demo_logo.PNG'),
+('appSeverity', 'demo');

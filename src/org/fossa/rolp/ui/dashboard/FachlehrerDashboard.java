@@ -45,7 +45,7 @@ public class FachlehrerDashboard extends FossaWindow implements Button.ClickList
 	
 	private CustomLayout horizontalButtonBattery = new CustomLayout("./lehrerDashboards/fachlehrerHorizontalButtonBattery");
 	
-	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp.png";
+	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp_logo.png";
 
 	public FachlehrerDashboard(RolpApplication app) {
 		super(app);
@@ -64,6 +64,7 @@ public class FachlehrerDashboard extends FossaWindow implements Button.ClickList
 		
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
+		logo.setWidth("100px");
 		
 		headline.addComponent(logo,"logo");
 		

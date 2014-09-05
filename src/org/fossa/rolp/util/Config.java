@@ -50,4 +50,8 @@ public class Config {
 	public static String getRelativeLogoPath() {
 		return getProp("relativeLogoPath");
 	}
+	
+	public static String getAppSeverity() {
+		return getProp("appSeverity");
+	}
 }

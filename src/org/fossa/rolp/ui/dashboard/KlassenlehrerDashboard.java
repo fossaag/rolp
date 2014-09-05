@@ -97,7 +97,7 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 
 	
 
-	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp.png";
+	private static final String MAINPAGE_PANEL_ANMELDEN_LOGO_PATH = "images/rolp_logo.png";
 	
 	public KlassenlehrerDashboard(RolpApplication app) {
 		super(app);
@@ -116,6 +116,7 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
+		logo.setWidth("100px");
 		
 		headline.addComponent(logo,"logo");
 		headline.addComponent(headdataEditingPanel,"headdataEditingPanel");

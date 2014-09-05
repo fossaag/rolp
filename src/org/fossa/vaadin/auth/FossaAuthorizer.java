@@ -43,12 +43,12 @@ public class FossaAuthorizer implements Serializable {
     	this.layout = layout;
     }
     
-	public boolean checkAuthorization(String checkedClass) {
+	public boolean checkAuthorization() {
 		if (user==null) {
 			forceLogin("");
 			return false;
 		}
-		unlockApplication();
+		unlockApplication(user);
 		return true;
 	}
 	
@@ -56,7 +56,7 @@ public class FossaAuthorizer implements Serializable {
 		fossaApp.getMainWindow().addWindow(new FossaLoginScreen(fossaApp, this, message));
 	}
 	
-	private void unlockApplication() {
+	public void unlockApplication(FossaUserLaso user) {
 		layout.addComponent(new FossaAuthorizerFrameBuilder(this, user));
 		fossaApp.buildMainLayout();
 	}
@@ -82,7 +82,7 @@ public class FossaAuthorizer implements Serializable {
 				this.user = tempUser;
 				user.lock();
 				fossaApp.setUser(user);
-				unlockApplication();
+				unlockApplication(user);
 				return;
 			}
 		}
