@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `dynamic_lehrer` (
   `mail` varchar(255) DEFAULT NULL,
   `isAdmin` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Tabellenstruktur für Tabelle `config`
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `static_config` (
 REPLACE INTO `dynamic_authentication_user` VALUES ('1', 'Schulleiter', '', '21232f297a57a5a743894a0e4a801fc3', 'admin');
 REPLACE INTO `dynamic_lehrer` VALUES ('1', '1', null, true);
 INSERT INTO `static_fachtyp` VALUES ('1', 'Pflichtfach'), ('2', 'Kurs');
-INSERT INTO `static_pflichtfachtemplates` VALUES ('1', 'Deutsch'), ('2', 'Mathematik'), ('3', 'Englisch');
+INSERT INTO `static_pflichtfachtemplates` VALUES ('1', 'Deutsch'), ('2', 'Mathematik'), ('3', 'Englisch'), ('4', 'Geschichte');
 INSERT INTO `static_halbjahr` VALUES ('1', '1. Halbjahr'), ('2', '2. Halbjahr');
 INSERT INTO `static_pflichtfachsuchwort` VALUES ('1', 'Deutschunterricht', '1'), ('2', 'Englischunterricht', '3'), ('3', 'Mathe', '2'), ('4', 'Mathematikunterricht', '2'), ('5', 'Kurs', null);
 INSERT INTO `static_config` (`propkey`, `propvalue`) VALUES

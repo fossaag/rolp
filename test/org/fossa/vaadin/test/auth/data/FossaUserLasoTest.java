@@ -21,7 +21,7 @@ public class FossaUserLasoTest {
 	private TestFossaUserLaso userLaso;
 	
 	class TestFossaUserLaso extends FossaUserLaso {		
-		
+		private static final long serialVersionUID = 5689398388756700849L;
 		public TestFossaUserLaso() {
 			super();
 		}		

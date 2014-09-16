@@ -33,6 +33,8 @@ import org.fossa.rolp.data.schueler.SchuelerPojo;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerHandler;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerLaso;
+import org.fossa.rolp.ui.zuordnung.fachschueler.FachSchuelerZuordnen;
+import org.fossa.rolp.ui.zuordnung.fachschueler.FachSchuelerZuordnenList;
 import org.fossa.vaadin.ui.FossaBooleanDialog;
 import org.fossa.vaadin.ui.FossaWindow;
 import org.fossa.vaadin.ui.exception.FossaLasoLockedException;
@@ -164,18 +166,22 @@ public class KurseZuordnen extends FossaWindow implements Button.ClickListener, 
 		}
 		else if (source == kursBearbeitenButton) {
 			FachLaso fach = (FachLaso) faecherList.getValue();
-			if (fach != null) {
-				faecherBearbeiten(fach);
+			if (fach == null) {
+				app.getMainWindow().showNotification("kein Fach ausgewählt");
+				return;
 			}
+			faecherBearbeiten(fach);
 		} else if (source == schuelerZuordnenButton) {
 			FachLaso fach = (FachLaso) faecherList.getValue();
-			if (fach != null) {
-				try {
-					openSubwindow(getSchuelerZuordnen(fach));
-				} catch (FossaLasoLockedException e) {
-					getWindow().showNotification("LOCKED");
-					return;
-				}
+			if (fach == null) {
+				app.getMainWindow().showNotification("kein Fach ausgewählt");
+				return;
+			}
+			try {
+				openSubwindow(getSchuelerZuordnen(fach));
+			} catch (FossaLasoLockedException e) {
+				getWindow().showNotification("LOCKED");
+				return;
 			}
 		} else if (source == kursEntfernenButton) {
 			FachLaso fach = (FachLaso) faecherList.getValue();

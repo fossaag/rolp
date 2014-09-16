@@ -28,6 +28,10 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class ZuordnungFachSchuelerLaso extends FossaLaso {
 
+	private static final long serialVersionUID = 2961576431099080377L;
+
+	public static final String FACHTYP_ID_COLUMN = "fachtypId";
+	
 	protected ZuordnungFachSchuelerPojo zuordnungFachSchueler;
 	private EinschaetzungLaso facheinschaetzungLaso;
 
@@ -68,10 +72,18 @@ public class ZuordnungFachSchuelerLaso extends FossaLaso {
 
 	public void setFacheinschaetzung(EinschaetzungLaso facheinschaetzung) {
 		facheinschaetzungLaso = facheinschaetzung;
-		zuordnungFachSchueler.setFacheinschaetzung(facheinschaetzung.getPojo());
+		if (facheinschaetzung != null) {
+			zuordnungFachSchueler.setFacheinschaetzung(facheinschaetzungLaso.getPojo());
+		} else {
+			zuordnungFachSchueler.setFacheinschaetzung(null);
+		}		
 		writeToDatabase();
 	}
 	
+	public Long getFachtypId() {
+		return getFach().getFachtyp().getId();
+	}
+
 	public String getName() {
 		if (getSchueler() == null) {
 			return "";

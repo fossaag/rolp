@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.fossa.rolp.util.HibernateUtil;
-import org.fossa.vaadin.data.FossaPojo;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

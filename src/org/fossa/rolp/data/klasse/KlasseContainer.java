@@ -28,9 +28,16 @@ public class KlasseContainer extends BeanItemContainer<KlasseLaso> implements Se
 	
 	private static final long serialVersionUID = -1561855055662151443L;
 
-	public static final Object[] NATURAL_COL_ORDER = new Object[] {
+	public static final String[] NATURAL_FORM_ORDER = new String[] {
 		KlassePojo.KLASSENNAME_COLUMN,
-		KlassePojo.ABGANGSJAHR_COLUMN,
+	};
+	
+	public static final String[] NATURAL_COL_ORDER = new String[] {
+		KlassePojo.KLASSENNAME_COLUMN,
+	};
+	
+	public static final String[] COL_HEADERS = new String[] {
+		KlassePojo.KLASSENNAME_COLUMN,
 	};
 	
 	public static final Object[] KLASSENLEHRER_ORDER = new Object[] {
@@ -52,13 +59,23 @@ public class KlasseContainer extends BeanItemContainer<KlasseLaso> implements Se
 				KlasseLaso klasseLaso = new KlasseLaso(klassePojo);
 				klasseContainer.addBean(klasseLaso);
 			}
-			sortieren();
-		}		
+		}
 		return klasseContainer;		
 	}
 	
-	public static void sortieren() {
-		getInstance().sort(new Object[] {KlassePojo.KLASSENNAME_COLUMN}, new boolean[] {true});
+	public static BeanItemContainer<KlasseLaso> getAlleKlassen(BeanItemContainer<KlasseLaso> unsortedContainer) {
+		
+		BeanItemContainer<KlasseLaso> eintraege = new BeanItemContainer<KlasseLaso>(KlasseLaso.class);
+		
+		for (KlasseLaso klassenItem : unsortedContainer.getItemIds()) {
+			eintraege.addBean(klassenItem);
+		}
+		eintraege.sort(new Object[] {KlassePojo.KLASSENNAME_COLUMN}, new boolean[] {true});
+				
+		BeanItemContainer<KlasseLaso> resultSchueler = new BeanItemContainer<KlasseLaso>(KlasseLaso.class);
+		resultSchueler.addAll(eintraege.getItemIds());
+		
+		return resultSchueler;
 	}
 	
 	public static KlasseLaso getKlasseByLehrer(LehrerPojo lehrer) {
@@ -72,7 +89,11 @@ public class KlasseContainer extends BeanItemContainer<KlasseLaso> implements Se
 	
 	public void deleteKlasse(KlasseLaso klasse) {
 		FossaLaso.deleteIfExists(klasse.getPojo());
-		klasseContainer = null;
-		getInstance();
+		for (KlasseLaso aKlasse : getInstance().getItemIds()) {
+			if (klasse.getId().equals(aKlasse.getId())) {
+				klasseContainer.removeItem(aKlasse);
+				return;
+			}
+		}
 	}
 }

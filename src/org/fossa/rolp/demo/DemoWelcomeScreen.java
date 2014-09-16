@@ -23,6 +23,7 @@ import org.fossa.vaadin.ui.FossaWindow;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
@@ -59,6 +60,7 @@ public class DemoWelcomeScreen extends FossaWindow implements Button.ClickListen
 		Embedded logoRolp = new Embedded(null, new ThemeResource(DEMO_LOGO_ROLP_PATH));
 		logoRolp.setType(Embedded.TYPE_IMAGE);
 		logoRolp.setWidth("100px");
+		logoRolp.setHeight("96px");
 		
 		Label rolpDemoText = new Label("<h2>Wilkommen</h2>Dies ist eine Demoversion der Software ROLP. Wählen Sie eine Rolle aus, um in das entsprechende Szenario zu gelangen. Der Schulleiter hat eine eigene Verwaltungsoberfläche, wo er die Lehrer und Klassen überblicken und zuweisen kann. Als Klassenlehrer und Fachlehrer gelangt man auf den Startbildschirm. Von da aus gelangt man zum Klassenlehrer-Dashboard und dem Fachlehrer-Dashboard. Der Klassenlehrer hat Zugang zu beiden Dashboards, da er im Normalfall auch Fächer unterrichtet.", Label.CONTENT_XHTML);
 		Label githubLinkDummy = new Label("ROLP auf <a href=\"https://github.com/fossaag/rolp\" target=\"_blank\">GitHub.com</a>", Label.CONTENT_XHTML);
@@ -96,6 +98,9 @@ public class DemoWelcomeScreen extends FossaWindow implements Button.ClickListen
 	@Override
 	public void buttonClick(ClickEvent event) {
 		final Button source = event.getButton();
+		WebBrowser b = (WebBrowser) app.getMainWindow().getTerminal();
+		String ip = b.getAddress();
+		System.out.println(ip + " - " + b.getCurrentDate());
 		if (source == okButton) {
 			if (roleSelect.getValue() == null) {
 				showNotification("Bitte wählen Sie eine Option!");

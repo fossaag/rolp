@@ -31,9 +31,9 @@ import org.fossa.vaadin.auth.data.FossaUserPojo;
 public class DemoSceneBuilder {
 	
 	private static String[] firstnames = new String[] {
-		"Ronnie", "Romy", "Mark", "Judy", "Elke", "Amelie", "Justin", "Andreas", "Karsten", "Vanessa", "Linda", "Mario", "Max", "Elsa", "Anna", "Christoff", "Jan", "Bianca", "Ina", "Sabrina", "Tim", "Maxi", "Sophie", "Bernd", "Jens", "Jörg", "Uwe", "Jenny", "Helena", "Eileen", "Madlen", "Monique", "Gerd", "Klaus", "Franz"};
+		"Ronnie", "Romy", "Mark", "Judy", "Elke", "Amelie", "Justin", "Andreas", "Karsten", "Vanessa", "Linda", "Mario", "Max", "Elsa", "Anna", "Christoff", "Jan", "Bianca", "Ina", "Sabrina", "Tim", "Maxi", "Sophie", "Bernd", "Jens", "Jörg", "Uwe", "Jenny", "Helena", "Eileen", "Madlen", "Monique", "Gerd", "Klaus", "Franz", "Hugo", "Steve", "Pauline", "Jasmin", "Tom", "Chris", "Adam"};
 	private static String[] lastnames = new String[] {
-		"Baumann", "Hofmann", "Hoffmann", "Steinmann", "Mann", "Jäger", "Fischer", "Berger", "Weinert", "Müller", "Meier", "Schulze", "Leitner", "Meggle", "Köhler", "Pohl", "Klaus", "Kunze", "Busch", "Wiese", "Weber", "Wache", "Saal", "Seifert", "Seidel", "Schnitzel", "Tippmann", "Trautner", "Marin", "Mendel", "Mauersberger", "Mund", "Muniz", "Erdel", "Elser", "Friedrich", "Daffner"};
+		"Baumann", "Hofmann", "Hoffmann", "Steinmann", "Mann", "Jäger", "Fischer", "Berger", "Weinert", "Müller", "Meier", "Schulze", "Leitner", "Meggle", "Köhler", "Pohl", "Klaus", "Kunze", "Busch", "Wiese", "Weber", "Wache", "Saal", "Seifert", "Seidel", "Schnitzel", "Tippmann", "Trautner", "Marin", "Mendel", "Mauersberger", "Mund", "Muniz", "Erdel", "Elser", "Friedrich", "Daffner", "Baum", "Förster", "Decker", "Becker", "Beck", "Tacker", "Brase"};
 	
 	public static void buildSchulleiterScene(RolpApplication app, FossaAuthorizer authorizer) {
 		LehrerPojo schulleiterlehrer = new LehrerPojo();
@@ -56,17 +56,11 @@ public class DemoSceneBuilder {
 		initializeContainers();
 		initializeSettings();
 		
-		FossaUserLaso klassenlehreruser = createLehrerUser("mmustermann", "Max", "Musterklassenlehrer");
-		FossaUserLaso fachlehreruser = createLehrerUser("fmusterfrau", "Frida", "Musterfachlehrer");
-		FossaUserLaso andererKlassenlehreruser = createLehrerUser("mmustermann", "Max", "Musterklassenlehrer");
+		FossaUserLaso klassenlehreruser = createLehrerUser("klmustermann", getRandomVorname(), "Musterklassenlehrer");
+		FossaUserLaso fachlehreruser = createLehrerUser("flmustermann", getRandomVorname(), "Musterfachlehrer");
+		FossaUserLaso andererKlassenlehreruser = createLehrerUser("aklmustermann", getRandomVorname(), "Andererklassenlehrer");
 		
-		KlasseLaso klasse = buildEineKlasse(klassenlehreruser, fachlehreruser);
-		KlasseLaso andereKlasse = buildEineKlasse(andererKlassenlehreruser, fachlehreruser);
-		
-		FachLaso kurs1 = createKurs(klassenlehreruser, fachlehreruser, "Fußball ");
-		FachLaso kurs2 = createKurs(klassenlehreruser, fachlehreruser, "Gitarre ");
-		ordneKurseZu(klasse, kurs1, kurs2);
-		ordneKurseZu(andereKlasse, kurs1, kurs2);
+		buildEntities(klassenlehreruser, fachlehreruser, andererKlassenlehreruser);
 		
 		app.setUser(klassenlehreruser);
 		authorizer.unlockApplication(klassenlehreruser);
@@ -76,21 +70,25 @@ public class DemoSceneBuilder {
 		initializeContainers();
 		initializeSettings();
 		
-		FossaUserLaso klassenlehreruser = createLehrerUser("mmustermann", "Max", "Musterklassenlehrer");
-		FossaUserLaso fachlehreruser = createLehrerUser("fmusterfrau", "Frida", "Musterfachlehrer");
-		FossaUserLaso andererKlassenlehreruser = createLehrerUser("mmustermann", "Max", "Musterklassenlehrer");
+		FossaUserLaso klassenlehreruser = createLehrerUser("klmustermann", getRandomVorname(), "Musterklassenlehrer");
+		FossaUserLaso fachlehreruser = createLehrerUser("flmustermann", getRandomVorname(), "Musterfachlehrer");
+		FossaUserLaso andererKlassenlehreruser = createLehrerUser("aklmustermann", getRandomVorname(), "Andererklassenlehrer");
 		
-		KlasseLaso klasse = buildEineKlasse(klassenlehreruser, fachlehreruser);
-		KlasseLaso andereKlasse = buildEineKlasse(andererKlassenlehreruser, fachlehreruser);
+		buildEntities(klassenlehreruser, fachlehreruser, andererKlassenlehreruser);
+		
+		app.setUser(fachlehreruser);
+		authorizer.unlockApplication(fachlehreruser);
+		
+	}
+
+	private static void buildEntities(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser) {
+		KlasseLaso klasse = buildEineKlasse(klassenlehreruser, fachlehreruser, andererKlassenlehreruser);
+		KlasseLaso andereKlasse = buildEineKlasse(andererKlassenlehreruser, fachlehreruser, klassenlehreruser);
 		
 		FachLaso kurs1 = createKurs(klassenlehreruser, fachlehreruser, "Fußball ");
 		FachLaso kurs2 = createKurs(klassenlehreruser, fachlehreruser, "Gitarre ");
 		ordneKurseZu(klasse, kurs1, kurs2);
 		ordneKurseZu(andereKlasse, kurs1, kurs2);
-		
-		app.setUser(fachlehreruser);
-		authorizer.unlockApplication(fachlehreruser);
-		
 	}
 
 	private static void ordneKurseZu(KlasseLaso klasse, FachLaso kurs1,	FachLaso kurs2) {
@@ -113,31 +111,33 @@ public class DemoSceneBuilder {
 		}
 	}
 
-	private static KlasseLaso buildEineKlasse(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser) {
+	private static KlasseLaso buildEineKlasse(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser) {
 		KlasseLaso klasse = createKlasse(klassenlehreruser);
 		createSchueler(klasse);
-		createPflichtfaecher(klassenlehreruser, fachlehreruser, klasse);
+		createPflichtfaecher(klassenlehreruser, fachlehreruser, andererKlassenlehreruser, klasse);
 		return klasse;
 	}
 
-	private static void createPflichtfaecher(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser, KlasseLaso klasse) {
+	private static void createPflichtfaecher(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser, KlasseLaso klasse) {
 		for (PflichtfachtemplatesPojo pflichtfach : PflichtfachtemplatesPojoContainer.getInstance().getItemIds()) {
-			FachLaso fach = new FachLaso();
-			fach.setFachbezeichnung(pflichtfach.getPflichtfachname());
-			fach.setFachtyp(FachtypPojoContainer.getInstance().getPflichtfach());
-			setLehrers(klassenlehreruser, fachlehreruser, fach);
-			FachContainer.getInstance().addBean(fach);
-			for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
-				ZuordnungFachSchuelerLaso zuordnungFS = new ZuordnungFachSchuelerLaso();
-				zuordnungFS.setFach(fach.getPojo());
-				zuordnungFS.setSchueler(schueler.getPojo());
-				if (random(0,4)<4) {
-					EinschaetzungLaso facheinschaetzung = new EinschaetzungLaso();
-					facheinschaetzung.setEinschaetzungstext("In " + fach.getFachbezeichnung() + " hast du große Fortschritte gemacht, " + schueler.getVorname() + ".");
-					facheinschaetzung.setErledigt(true);
-					zuordnungFS.setFacheinschaetzung(facheinschaetzung);
+			if (random(0,3)<3) {
+				FachLaso fach = new FachLaso();
+				fach.setFachbezeichnung(pflichtfach.getPflichtfachname());
+				fach.setFachtyp(FachtypPojoContainer.getInstance().getPflichtfach());
+				setLehrers(klassenlehreruser, fachlehreruser, andererKlassenlehreruser, fach);
+				FachContainer.getInstance().addBean(fach);
+				for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
+					ZuordnungFachSchuelerLaso zuordnungFS = new ZuordnungFachSchuelerLaso();
+					zuordnungFS.setFach(fach.getPojo());
+					zuordnungFS.setSchueler(schueler.getPojo());
+					if (random(0,4)<4) {
+						EinschaetzungLaso facheinschaetzung = new EinschaetzungLaso();
+						facheinschaetzung.setEinschaetzungstext("In " + fach.getFachbezeichnung() + " hast du große Fortschritte gemacht, " + schueler.getVorname() + ".");
+						facheinschaetzung.setErledigt(true);
+						zuordnungFS.setFacheinschaetzung(facheinschaetzung);
+					}
+					ZuordnungFachSchuelerContainer.getInstance().addBean(zuordnungFS);
 				}
-				ZuordnungFachSchuelerContainer.getInstance().addBean(zuordnungFS);
 			}
 		}
 	}
@@ -159,34 +159,37 @@ public class DemoSceneBuilder {
 	}
 
 	private static FachLaso createKurs(FossaUserLaso klassenlehreruser,	FossaUserLaso fachlehreruser, String kursname) {
-		int i=1;
+		int i=0;
 		FachLaso kurs1;
+		String kursvorschlag;
 		do {
-			String kursvorschlag = kursname + i;
-			for (FachLaso kurs : FachContainer.getInstance().getItemIds()) {
-				if (kursvorschlag.equals(kurs.getFachbezeichnung())) {
-					i += 1;
-					continue;
-				}
-			}
-			kurs1 = new FachLaso();
-			kurs1.setFachbezeichnung(kursvorschlag);
-			kurs1.setFachtyp(FachtypPojoContainer.getInstance().getKurs());
-			kurs1.setFachlehrerEins(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
-			FachContainer.getInstance().addBean(kurs1);
-			break;
-		} while (1==1);
+			i += 1;
+			kursvorschlag = kursname + i;
+		} while (!isValidKursename(kursvorschlag));
+		kurs1 = new FachLaso();
+		kurs1.setFachbezeichnung(kursvorschlag);
+		kurs1.setFachtyp(FachtypPojoContainer.getInstance().getKurs());
+		kurs1.setFachlehrerEins(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
+		FachContainer.getInstance().addBean(kurs1);
 		return kurs1;
 	}
 	
+	private static boolean isValidKursename(String kursvorschlag) {
+		for (FachLaso kurs : FachContainer.getInstance().getItemIds()) {
+			if (kursvorschlag.equals(kurs.getFachbezeichnung())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private static KlasseLaso createKlasse(FossaUserLaso fossaUserLaso) {
 		KlasseLaso klasse = new KlasseLaso();
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(new Date());
 		int baseYear = cal.get(Calendar.YEAR);
 		
-		klasse.setAbgangsjahr((int) (Math.random() * (baseYear+9 - baseYear) + baseYear));
-		klasse.setKlassenname(KlassenstufenUtils.generateKlassennameForKlassenstufe(10-(klasse.getAbgangsjahr()-baseYear), KlasseContainer.getInstance()));
+		klasse.setKlassenname(KlassenstufenUtils.generateKlassennameForKlassenstufe(10-((int) (Math.random() * (baseYear+9 - baseYear) + baseYear)-baseYear), KlasseContainer.getInstance()));
 		klasse.setKlassenlehrer(LehrerContainer.getLehrerByUser(fossaUserLaso).getPojo());
 		KlasseContainer.getInstance().addBean(klasse);
 		EinschaetzungLaso klasseneinschaetzung = new EinschaetzungLaso();
@@ -212,8 +215,8 @@ public class DemoSceneBuilder {
 		return fossaUserLaso;
 	}
 	
-	private static void setLehrers(FossaUserLaso klassenlehreruser,	FossaUserLaso fachlehreruser, FachLaso fach) {
-		int factor = random(0,2);
+	private static void setLehrers(FossaUserLaso klassenlehreruser,	FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser, FachLaso fach) {
+		int factor = random(0,5);
 		if (factor==0) {
 			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
 		} else if (factor==1) {
@@ -221,6 +224,14 @@ public class DemoSceneBuilder {
 			fach.setFachlehrerZwei(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
 		} else if (factor==2) {
 			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
+		} else if (factor==3) {
+			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
+			fach.setFachlehrerZwei(LehrerContainer.getLehrerByUser(andererKlassenlehreruser).getPojo());
+		} else if (factor==4) {
+			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(andererKlassenlehreruser).getPojo());
+		} else if (factor==5) {
+			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
+			fach.setFachlehrerZwei(LehrerContainer.getLehrerByUser(andererKlassenlehreruser).getPojo());
 		}
 	}
 

@@ -20,14 +20,9 @@ package org.fossa.rolp.ui.dashboard;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.fossa.rolp.RolpApplication;
-import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
-import org.fossa.rolp.data.fach.FachContainer;
-import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.leb.LebSettingsContainer;
@@ -36,20 +31,17 @@ import org.fossa.rolp.data.lehrer.LehrerContainer;
 import org.fossa.rolp.data.lehrer.LehrerLaso;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
-import org.fossa.rolp.data.schueler.SchuelerPojo;
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerHandler;
 import org.fossa.rolp.ui.klasse.KlassenlehrerZuordnen;
+import org.fossa.rolp.ui.klasse.klasseanlegen.KlassenlisteAnzeigen;
 import org.fossa.rolp.ui.leb.LebSettingsAnlegen;
 import org.fossa.rolp.ui.lehrer.LehrerAnlegen;
 import org.fossa.rolp.ui.lehrer.LehrerList;
 import org.fossa.rolp.util.Config;
-import org.fossa.rolp.util.KlassenstufenUtils;
 import org.fossa.rolp.util.LebCreator;
+import org.fossa.rolp.util.UpgradeUtils;
 import org.fossa.rolp.util.ZipHandler;
 import org.fossa.vaadin.auth.data.FossaUserContainer;
 import org.fossa.vaadin.auth.data.FossaUserLaso;
-import org.fossa.vaadin.laso.FossaLaso;
 import org.fossa.vaadin.ui.FossaBooleanDialog;
 import org.fossa.vaadin.ui.FossaWindow;
 import org.fossa.vaadin.ui.exception.FossaLasoLockedException;
@@ -72,12 +64,13 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 	public RolpApplication app;
 	
 	private FossaBooleanDialog confirmUpgrade;	
-
+	
 	private Button lehrerAnlegenButton = new Button("Lehrer anlegen", (ClickListener) this);
 	private Button lehrerBearbeitenButton = new Button("Lehrer bearbeiten", (ClickListener) this);
-	private Button lebSettingsButton = new Button("Einstellungen", (ClickListener) this);
-	private Button zipDownloadButton = new Button("LEB-Archivierung", (ClickListener) this);
 	private Button klassenlehrerZuweisenButton = new Button("Klassenlehrer zuweisen", (ClickListener) this);
+	private Button klasseVerwaltenButton = new Button("Klassen verwalten", (ClickListener) this);
+	private Button lebSettingsButton = new Button("Einstellungen", (ClickListener) this);
+	private Button lebArchivierungButton = new Button("LEB-Archivierung", (ClickListener) this);
 	private Button upgradeButton = new Button("Systemupgrade", (ClickListener) this);	
 	private CustomLayout horizontalButtonBattery = new CustomLayout("./applicationMainLayout/adminHorizontalButtonBattery");
 	private CustomLayout verticalButtonBattery = new CustomLayout("./applicationMainLayout/adminVerticalButtonBattery");
@@ -105,8 +98,9 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		lehrerAnlegenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		lehrerBearbeitenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		lebSettingsButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
-		zipDownloadButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
+		lebArchivierungButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		klassenlehrerZuweisenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
+		klasseVerwaltenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		upgradeButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		upgradeButton.setEnabled(
 				LebSettingsContainer.getLebSettings().getZeugnisausgabedatum() != null
@@ -117,10 +111,11 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		horizontalButtonBattery.addComponent(lehrerAnlegenButton, "lehrerAnlegenButton");
 		horizontalButtonBattery.addComponent(lehrerBearbeitenButton, "lehrerBearbeitenButton");
 		horizontalButtonBattery.addComponent(klassenlehrerZuweisenButton, "klassenlehrerZuweisenButton");
+		horizontalButtonBattery.addComponent(klasseVerwaltenButton, "klasseVerwaltenButton");
 		
 		verticalButtonBattery.removeAllComponents();
 		verticalButtonBattery.addComponent(lebSettingsButton, "lebSettingsButton");
-		verticalButtonBattery.addComponent(zipDownloadButton, "zipDownloadButton");
+		verticalButtonBattery.addComponent(lebArchivierungButton, "zipDownloadButton");
 		verticalButtonBattery.addComponent(upgradeButton, "upgradeButton");		
 	}
 
@@ -130,10 +125,12 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		if (source == lehrerAnlegenButton) {
 			openSubwindow(getLehrerAnlegen(null));
 		} else if (source == lehrerBearbeitenButton) {
-			if (getLehrerList().getValue() != null) {
-				LehrerLaso lehrer = (LehrerLaso) getLehrerList().getValue();
-				openSubwindow(getLehrerAnlegen(lehrer));
+			if (getLehrerList().getValue() == null) {
+				app.getMainWindow().showNotification("kein Lehrer ausgewählt");
+				return;
 			}
+			LehrerLaso lehrer = (LehrerLaso) getLehrerList().getValue();
+			openSubwindow(getLehrerAnlegen(lehrer));
 		} else if (source == klassenlehrerZuweisenButton) {
 			try {
 				openSubwindow(getKlassenlehrerZuweisen());
@@ -141,13 +138,21 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 				getWindow().showNotification("LOCKED");
 				return;
 			}			
+		} else if (source == klasseVerwaltenButton) {
+			getKlassenlisteAnzeigen();
 		} else if (source == lebSettingsButton) {
 			openSubwindow(getLebSettingsAnlegen(LebSettingsContainer.getLebSettings()));
 		} else if (source == upgradeButton) {
 			confirmUpgrade = new FossaBooleanDialog(app, " - Bestätigung - ", "Wenn Sie das Systemupgrade durchführen, werden alle Zuordnungen, alle Fächer bzw. Kurse und alle Bestandteile der LEBs dauerhaft entfernt. Möchten Sie das Upgrade dennoch durchführen?", "Ja", "Nein");
 			confirmUpgrade.addListener((CloseListener) this); 
 			openSubwindow(confirmUpgrade);
-		} else if (source == zipDownloadButton) {
+		} else if (source == lebArchivierungButton) {
+			for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
+				if (user.isLocked() && LehrerContainer.getLehrerByUser(user).getPojo().getIsAdmin() && !app.getLoginLehrer().getUser().getId().equals(user.getId())) {
+					app.getMainWindow().showNotification("Die LEB-Archivierung kann nicht ausgeführt werden, solange mehrere Administratoren angemeldet sind.");
+					return;
+				}
+			}
 			try {
 				File zipFile = new File(Config.getLocalTempPath()+ "LEBs.zip");
 				zipFile.delete();
@@ -194,7 +199,7 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		return lehrerList;
 	}
 
-	private FossaWindow getLebSettingsAnlegen(LebSettingsLaso lebSettings) {
+	private LebSettingsAnlegen getLebSettingsAnlegen(LebSettingsLaso lebSettings) {
 		return new LebSettingsAnlegen(app, lebSettings);
 	}
 
@@ -205,13 +210,17 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		return new LehrerAnlegen(app, lehrer);
 	}
 	
+	private void getKlassenlisteAnzeigen() {
+		app.getMainWindow().addWindow(new KlassenlisteAnzeigen(app));
+	}
+
 	@Override	
 	public void windowClose(CloseEvent event) {
 		Window source = event.getWindow();
 		if (source == confirmUpgrade) {
 			if (confirmUpgrade.getDecision()) {
 				try {
-					doSystemUpgrade();
+					UpgradeUtils.doSystemUpgrade(app, this, getLebSettingsAnlegen(LebSettingsContainer.getLebSettings()));
 				} catch (Exception e) {
 					e.printStackTrace();
 					app.getMainWindow().showNotification("Fehler beim Löschen! Bitte wenden Sie sich an den Administrator!", Notification.TYPE_ERROR_MESSAGE);
@@ -220,91 +229,6 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		}
 	}
 	
-	private void doSystemUpgrade() throws Exception {
-		for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
-			if (user.isLocked() && !LehrerContainer.getLehrerByUser(user).getPojo().getIsAdmin()) {				
-				app.getMainWindow().showNotification("Konflikt!", "Das Systemupdate kann nicht durchgeführt werden, während noch Lehrer am System angemeldet sind. Bitte sorgen Sie dafür, dass alle Lehrer sich vom System abgemeldet haben, bevor Sie es erneut versuchen.", Notification.TYPE_ERROR_MESSAGE);
-				return;
-			}			
-		}
-		for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
-			user.lock();			
-		}
-
-		systemBereinigen();
-		if (LebSettingsContainer.getLebSettings().getHalbjahr().isZweitesHalbjahr()) {
-			letzteKlassenLoeschen();
-			klassenUpgraden();
-			ersteKlassenErstellen();
-		}
-		
-		openSubwindow(getLebSettingsAnlegen(LebSettingsContainer.getLebSettings()));
-		
-		for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
-			user.unlock();			
-		}
-		app.getMainWindow().showNotification("Das System-Upgrade ist abgeschlossen. Bitte passen Sie nun das Zeugnisausgabedatum und das Halbjahr an.", Notification.TYPE_TRAY_NOTIFICATION);
-
-	}
-	
-	private void letzteKlassenLoeschen() {
-		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
-			if (KlassenstufenUtils.getKlassenstufe(klasse.getKlassenname()) == LebSettingsContainer.getLebSettings().getLetzteKlassenstufe()) {
-				for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
-					SchuelerContainer.getInstance().deleteSchueler(schueler);
-				}
-				KlasseContainer.getInstance().deleteKlasse(klasse);
-			}
-		}
-	}
-
-	private void klassenUpgraden() {
-		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
-			klasse.setKlassenname(KlassenstufenUtils.erhoeheKlassenstufe(klasse.getKlassenname()));
-		}		
-	}
-	
-	private void ersteKlassenErstellen() {
-		int abgangsjahrDerErsties = GregorianCalendar.getInstance().get(Calendar.YEAR) + LebSettingsContainer.getLebSettings().getLetzteKlassenstufe();
-		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
-			if (KlassenstufenUtils.getKlassenstufe(klasse.getKlassenname()) == 2) {
-				abgangsjahrDerErsties = klasse.getAbgangsjahr() + 1;
-				break;
-			}
-		}
-		for (int i=0; i<LebSettingsContainer.getLebSettings().getAnzahlErsteKlassen(); i++) {
-			KlasseLaso klasse = new KlasseLaso();
-			klasse.setKlassenname(KlassenstufenUtils.generateKlassennameForKlassenstufe(1, KlasseContainer.getInstance()));
-			klasse.setAbgangsjahr(abgangsjahrDerErsties);
-			KlasseContainer.getInstance().addBean(klasse);
-		}
-		KlasseContainer.sortieren();
-	}
-
-	private void systemBereinigen() throws Exception {
-		for (SchuelerLaso schueler : SchuelerContainer.getInstance().getItemIds()){
-			EinschaetzungLaso einschaetzung = schueler.getSchuelereinschaetzung();
-			if(einschaetzung != null){
-				schueler.setSchuelereinschaetzung(null);
-				FossaLaso.deleteIfExists(einschaetzung.getPojo());
-			}
-		}
-		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()){
-			EinschaetzungLaso einschaetzung = klasse.getKlasseneinschaetzung();
-			if(einschaetzung != null){
-				klasse.setKlasseneinschaetzung(null);
-				FossaLaso.deleteIfExists(einschaetzung.getPojo());
-			}
-		}
-
-		for (FachLaso fach : FachContainer.getInstance().getItemIds()) {
-			for (SchuelerPojo schueler: ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach.getPojo()).getItemIds()) {
-				new ZuordnungFachSchuelerHandler(schueler, fach.getPojo(), true, this).setZugeordnet(false);
-			}
-			FachContainer.getInstance().deleteFach(fach);
-		}
-	}
-
 	protected void openSubwindow(FossaWindow window) {
 		app.getMainWindow().addWindow(window);
 	}

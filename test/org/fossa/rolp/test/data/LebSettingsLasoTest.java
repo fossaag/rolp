@@ -25,6 +25,7 @@ public class LebSettingsLasoTest {
 	private int letzteKlassenstufe;
 	
 	class TestLebSettingsLaso extends LebSettingsLaso {		
+		private static final long serialVersionUID = -8142640747495140753L;
 		public TestLebSettingsLaso() {
 			super();
 		}		

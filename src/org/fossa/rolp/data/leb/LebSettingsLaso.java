@@ -26,6 +26,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class LebSettingsLaso extends FossaLaso {
 
+	private static final long serialVersionUID = -7439933289166242527L;
+	
 	public static final String ZEUGNISAUSGABEDATUM_COLUMN = "zeugnisausgabedatumString";
 	public static final String HALBJAHR_COLUMN = "halbjahrString";
 	

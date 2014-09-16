@@ -113,9 +113,11 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 		}
 		else if (source == schuelerBearbeitenButton){
 			SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
-			if (schueler != null) {
-				schuelerBearbeiten(schueler);
-			} 
+			if (schueler == null) {
+				app.getMainWindow().showNotification("kein Schüler ausgewählt");
+				return;
+			}
+			schuelerBearbeiten(schueler);
 		} else if (source == schuelerEntfernenButton) {
 			SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
 			if (schueler != null) {
@@ -123,9 +125,13 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 					getWindow().showNotification("LOCKED");
 					return;
 				}
-				if (SchuelerContainer.getAllSchuelerOfKlasse(klasseLaso.getPojo()).size() < 2) {
-					getWindow().showNotification("Eine Klasse braucht mindestens einen Schüler!");
-					return;
+				for (FachPojo fach : ZuordnungFachSchuelerContainer.getAllFaecherOfSchueler(schueler.getPojo()).getItemIds()) {
+					if (fach.getFachtyp().isPflichtfach()) {
+						if (ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach).size() == 1) {
+							getWindow().showNotification(schueler.getVorname() + " ist der letzte Schüler im Fach '" + fach.getFachbezeichnung() + "' und kann daher nicht gelöscht werden.");
+							return;
+						}
+					}
 				}
 				confirmDeleteSchueler = new FossaBooleanDialog(app, " - Bestätigung - ", "Möchten Sie den Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' wirklich entgültig entfernen?", "Ja", "Nein");
 				confirmDeleteSchueler.addListener((CloseListener) this); 

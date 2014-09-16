@@ -21,7 +21,6 @@ import java.io.IOException;
 
 import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
-import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.leb.LebSettingsContainer;
@@ -31,13 +30,13 @@ import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer
 import org.fossa.rolp.ui.einschaetzung.EinschaetzungAnlegen;
 import org.fossa.rolp.ui.fach.KurseZuordnen;
 import org.fossa.rolp.ui.fach.PflichtfaecherlisteAnzeigen;
-import org.fossa.rolp.ui.fach.SchuelerfachList;
-import org.fossa.rolp.ui.fach.SchuelerfachlisteAnzeigen;
 import org.fossa.rolp.ui.klasse.klasseanlegen.KlasseAnlegen;
 import org.fossa.rolp.ui.leb.LebAnzeigen;
 import org.fossa.rolp.ui.schueler.SchuelerList;
 import org.fossa.rolp.ui.schueler.SchuelerlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.versetzungsvermerk.VersetzungsvermerklisteAnzeigen;
+import org.fossa.rolp.ui.zuordnung.fachschueler.SchuelerfachList;
+import org.fossa.rolp.ui.zuordnung.fachschueler.SchuelerfachlisteAnzeigen;
 import org.fossa.rolp.util.HintUtils;
 import org.fossa.vaadin.ui.FossaBooleanCellImageHandler;
 import org.fossa.vaadin.ui.FossaWindow;
@@ -71,9 +70,8 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 	private Button facheinschaetzungButton = new Button ("Facheinschätzungen", (ClickListener) this);
 	private Button lebErstellenButton = new Button ("LEB erstellen", (ClickListener) this);
 	private Button windowCloseButton = new Button ("Fenster schließen", (ClickListener) this);
-	private Button versetzungsvermerkButton = new Button ("Versetzungsvermerk", (ClickListener) this);
+	private Button versetzungsvermerkButton = new Button ("Versetzungsvermerke", (ClickListener) this);
 	private TextField klasseLabel;
-	private TextField abgangsjahrLabel;
 	private TextField zeugnisausgabeLabel;
 	private TextField halbjahrLabel;
 	private Label hinweistext;
@@ -117,6 +115,7 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
 		logo.setWidth("100px");
+		logo.setHeight("96px");
 		
 		headline.addComponent(logo,"logo");
 		headline.addComponent(headdataEditingPanel,"headdataEditingPanel");
@@ -162,8 +161,8 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		String hinweisCollection = "";
 		KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(app.getLoginLehrer());
 		if (klasse != null){
-			if (FachContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()).size() == 0) {
-				hinweisCollection = hinweisCollection + HintUtils.createHinweistextKlasseKeinePflichtfaecher(FachContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()), klasse.getPojo());
+			if (ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()).size() == 0) {
+				hinweisCollection = hinweisCollection + HintUtils.createHinweistextKlasseKeinePflichtfaecher(ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()), klasse.getPojo());
 			}		
 			for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
 				hinweisCollection = hinweisCollection + HintUtils.createHinweistextSchuelerKeineKurse(ZuordnungFachSchuelerContainer.getInstance(), schueler);
@@ -226,10 +225,6 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		klasseLabel.addStyleName("klasseLabel");
 		headdataEditingPanel.addComponent(klasseLabel,"klasseLabel");
 
-		abgangsjahrLabel = new TextField("Abgangsjahr " + String.valueOf(klasse.getAbgangsjahr()));
-		abgangsjahrLabel.setReadOnly(true);
-		headdataEditingPanel.addComponent(abgangsjahrLabel,"abgangsjahrLabel");
-		
 		zeugnisausgabeLabel = new TextField("Zeugnisausgabe am " + LebSettingsContainer.getLebSettings().getZeugnisausgabedatumString());
 		zeugnisausgabeLabel.setReadOnly(true);
 		headdataEditingPanel.addComponent(zeugnisausgabeLabel,"zeugnisausgabeLabel");
@@ -286,9 +281,11 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		}
 		else if (source == facheinschaetzungButton ){
 			SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
-			if (schueler != null) {
-				schuelerspezifischeDetailsAnzeigen(schueler);
+			if (schueler == null) {
+				app.getMainWindow().showNotification("kein Schüler ausgewählt");
+				return;
 			}
+			schuelerspezifischeDetailsAnzeigen(schueler);
 		}
 		else if (source == lebErstellenButton ){
 			SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
@@ -357,20 +354,22 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 
 	private void showIndividuelleEinschaetzung() {
 		SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
-		if (schueler != null) {
-			EinschaetzungLaso einschaetzung = schueler.getSchuelereinschaetzung();
-			if (einschaetzung == null){
-				einschaetzung = new EinschaetzungLaso();
-				schueler.setSchuelereinschaetzung(einschaetzung);
-			}
-			try {
-				einschaetzungAnlegen = new EinschaetzungAnlegen(app, einschaetzung, "individuelle Einschätzung für " + schueler.getVorname() + " " + schueler.getName(), schueler);
-			} catch (FossaLasoLockedException e) {
-				getWindow().showNotification("LOCKED");
-				return;
-			}
-			getApplication().getMainWindow().addWindow(einschaetzungAnlegen);
-		}		
+		if (schueler == null) {
+			app.getMainWindow().showNotification("kein Schüler ausgewählt");
+			return;
+		}
+		EinschaetzungLaso einschaetzung = schueler.getSchuelereinschaetzung();
+		if (einschaetzung == null){
+			einschaetzung = new EinschaetzungLaso();
+			schueler.setSchuelereinschaetzung(einschaetzung);
+		}
+		try {
+			einschaetzungAnlegen = new EinschaetzungAnlegen(app, einschaetzung, "individuelle Einschätzung für " + schueler.getVorname() + " " + schueler.getName(), schueler);
+		} catch (FossaLasoLockedException e) {
+			getWindow().showNotification("LOCKED");
+			return;
+		}
+		getApplication().getMainWindow().addWindow(einschaetzungAnlegen);
 	}
 
 	private void showKurseZuordnen() {

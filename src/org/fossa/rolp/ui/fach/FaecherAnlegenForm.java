@@ -68,9 +68,12 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 		boolean neuesFach = (fossaLaso.getId() == null);
 		FachLaso fach = (FachLaso) fossaLaso;
 		String fachbezeichnung = (String) getField(FachPojo.FACHBEZEICHNUNG_COLUMN).getValue();
+		if(fachbezeichnung == ""){
+			throw new FossaFormInvalidException();
+		}
 		KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(((RolpApplication) getApplication()).getLoginLehrer());
 		ArrayList<FachLaso> relevanteFaecher = new ArrayList<FachLaso>();
-		relevanteFaecher.addAll(FachContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()).getItemIds());
+		relevanteFaecher.addAll(ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()).getItemIds());
 		relevanteFaecher.addAll(FachContainer.getAllKurse().getItemIds());
 		for (FachLaso aFach : relevanteFaecher) {
 			if (aFach.getFachbezeichnung().equals(fachbezeichnung)) {

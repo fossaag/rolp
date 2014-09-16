@@ -20,7 +20,6 @@ package org.fossa.rolp.ui.klasse.klasseanlegen;
 import org.fossa.rolp.data.klasse.KlassePojo;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
@@ -35,10 +34,6 @@ public class KlasseAnlegenFormFields extends DefaultFieldFactory {
 		if (propertyId.equals(KlassePojo.KLASSENNAME_COLUMN)) {
 			field.setCaption("Klassenbezeichnung: ");
 			field.setRequired(true);
-		} else if (propertyId.equals(KlassePojo.ABGANGSJAHR_COLUMN)) {
-			field.setCaption("Abgangsjahr: ");
-			field.setRequired(true);
-			field.addValidator(new IntegerValidator("Jahreszahl besteht aus 4 Zahlen"));
 		} 
 		return field;	
 	}	

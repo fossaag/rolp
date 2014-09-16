@@ -26,6 +26,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class FachLaso extends FossaLaso {
 	
+	private static final long serialVersionUID = 893521359692022131L;
+	
 	public static final String ZUGEWIESENE_SCHUELER_COLUMN = "zugewieseneSchuelerAnzahl";
 	public static final String FACHLEHRER_EINS_COLUMN = "fachlehrerEinsString";
 	public static final String FACHLEHRER_ZWEI_COLUMN = "fachlehrerZweiString";

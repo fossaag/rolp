@@ -23,6 +23,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class FossaUserLaso extends FossaLaso {
 
+	private static final long serialVersionUID = -2995412865467231895L;
+
 	private FossaUserPojo user;
 	
 	public static final String FORM_PW_ONE_COLUMN = "formPwOne";

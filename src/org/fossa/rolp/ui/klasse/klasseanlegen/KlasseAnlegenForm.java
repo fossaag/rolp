@@ -46,27 +46,29 @@ public class KlasseAnlegenForm extends FossaForm implements ClickListener {
 	
 	@Override
 	public void saveFossaForm() throws FossaFormInvalidException {
-		boolean neueKlasse = (fossaLaso.getId() == null);
-		String klassenname = ((String) getField(KlassePojo.KLASSENNAME_COLUMN).getValue());		
-		try {
-			KlassenstufenUtils.getKlassenstufe(klassenname);
-		} catch (NumberFormatException e) {
-			throw new FossaFormInvalidException("1. Zeichen muss eine Zahl sein");
-		}
-		for(KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
-			if (klasse.getKlassenname().equals(klassenname) && klasse.getId() != fossaLaso.getId()) {
-				throw new FossaFormInvalidException("Es gibt bereits eine Klasse mit diesem Namen.");
+		if(isValid()){
+			boolean neueKlasse = (fossaLaso.getId() == null);
+			String klassenname = ((String) getField(KlassePojo.KLASSENNAME_COLUMN).getValue());		
+			try {
+				KlassenstufenUtils.getKlassenstufe(klassenname);
+			} catch (NumberFormatException e) {
+				throw new FossaFormInvalidException("1. Zeichen muss eine Zahl sein");
+			}
+			for(KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
+				if (klasse.getKlassenname().equals(klassenname) && klasse.getId() != fossaLaso.getId()) {
+					throw new FossaFormInvalidException("Es gibt bereits eine Klasse mit diesem Namen.");
+				}
+			}
+			super.saveFossaForm();
+			if (neueKlasse) {
+				LehrerPojo klassenlehrer = (((RolpApplication) getApplication()).getLoginLehrer());
+				KlasseLaso klasse = (KlasseLaso) fossaLaso;
+				klasse.setKlassenlehrer(klassenlehrer);
+				closeWindow();
 			}
 		}
-		super.saveFossaForm();
-		if (neueKlasse) {
-			LehrerPojo klassenlehrer = (((RolpApplication) getApplication()).getLoginLehrer());
-			KlasseLaso klasse = (KlasseLaso) fossaLaso;
-			klasse.setKlassenlehrer(klassenlehrer);
-			closeWindow();
-		}
 	}	
-
+	
 	public void addTemporaryItem(KlasseLaso klasseLaso) {
 		super.addTemporaryItem(klasseLaso);
 	}

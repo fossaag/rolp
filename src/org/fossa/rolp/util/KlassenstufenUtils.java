@@ -83,5 +83,4 @@ public class KlassenstufenUtils {
 			return 1.3f;
 		}	
 	}
-
 }

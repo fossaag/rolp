@@ -38,7 +38,7 @@ public class KlassenlehrerZuordnenList extends Table implements ValueChangeListe
 	
 	private void throwExceptionIfLasosUnavailable() throws FossaLasoLockedException {
 		for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
-			if (user.isLocked() && !LehrerContainer.getLehrerByUser(user).getPojo().getIsAdmin()) {				
+			if (user.isLocked() && !LehrerContainer.getLehrerByUser(user).getPojo().getIsAdmin()) {
 				throw new FossaLasoLockedException();
 			}			
 		}
@@ -67,7 +67,7 @@ public class KlassenlehrerZuordnenList extends Table implements ValueChangeListe
 		for (FossaUserLaso user: FossaUserContainer.getInstance().getItemIds()) {
 			user.lock();			
 		}
-		setContainerDataSource(KlasseContainer.getInstance());
+		setContainerDataSource(KlasseContainer.getAlleKlassen(KlasseContainer.getInstance()));
 	}
 
 	public void unlockLasos() {

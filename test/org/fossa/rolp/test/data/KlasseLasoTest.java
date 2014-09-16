@@ -18,11 +18,11 @@ public class KlasseLasoTest {
 	private long id;
 	public boolean triedToWrite = false;
 	private String klassenname;
-	private int abgangsjahr;
 	private LehrerPojo klassenlehrer;
 	private EinschaetzungLaso klasseneinschaetzung;
 	
 	class TestKlasseLaso extends KlasseLaso {		
+		private static final long serialVersionUID = 8075586396823198343L;
 		public TestKlasseLaso() {
 			super();
 		}		
@@ -40,7 +40,6 @@ public class KlasseLasoTest {
 		klasseLaso = new TestKlasseLaso();
 		id = 99L;
 		klassenname = "5a";
-		abgangsjahr = 1945;
 		klassenlehrer = new LehrerPojo();
 		klassenlehrer.setId(78L);
 		EinschaetzungPojo klasseneinschaetzungPojo = new EinschaetzungPojo();
@@ -95,15 +94,6 @@ public class KlasseLasoTest {
 		assertTrue(klasseLaso.getKlassenname().equals(klassenname));
 	}
 
-	@Test
-	public void testAbgangsjahr() {
-		assertTrue(klasseLaso.getAbgangsjahr()!=(1945));
-		assertFalse(triedToWrite);
-		klasseLaso.setAbgangsjahr(abgangsjahr);
-		assertTrue(triedToWrite);
-		assertTrue(klasseLaso.getAbgangsjahr()==(abgangsjahr));
-	}
-	
 	@Test
 	public void testKlassenlehrer() {
 		assertTrue(klasseLaso.getKlassenlehrer() == null);

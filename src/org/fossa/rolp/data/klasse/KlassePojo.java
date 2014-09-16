@@ -40,7 +40,6 @@ public class KlassePojo implements FossaPojo, Serializable {
 
 	public static final String ID_COLUMN = "id";
 	public static final String KLASSENNAME_COLUMN = "klassenname";
-	public static final String ABGANGSJAHR_COLUMN = "abgangsjahr";
 	public static final String KLASSENLEHRER_COLUMN = "klassenlehrer";
 	public static final String KLASSENEINSCHAETZUNG_COLUMN = "klasseneinschaetzung";
 	public static final String SCHUELER_COLUMN = "schueler";
@@ -52,8 +51,6 @@ public class KlassePojo implements FossaPojo, Serializable {
 	private Long id;
 	@Column(name = KLASSENNAME_COLUMN)
 	private String klassenname = "";
-	@Column(name = ABGANGSJAHR_COLUMN)
-	private int abgangsjahr;
 	@OneToOne()
 	@JoinColumn(name = KLASSENLEHRER_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
 	private LehrerPojo klassenlehrer = null;
@@ -80,14 +77,6 @@ public class KlassePojo implements FossaPojo, Serializable {
 
 	public void setKlassenname(String klassenname) {
 		this.klassenname = klassenname;
-	}
-
-	public int getAbgangsjahr() {
-		return abgangsjahr;
-	}
-
-	public void setAbgangsjahr(int abgangsjahr) {
-		this.abgangsjahr = abgangsjahr;
 	}
 	
 	public LehrerPojo getKlassenlehrer() {

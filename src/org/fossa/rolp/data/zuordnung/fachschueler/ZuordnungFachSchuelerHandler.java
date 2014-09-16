@@ -72,7 +72,7 @@ public class ZuordnungFachSchuelerHandler {
 			}
 		}
 		System.out.println("ich wurde zugeordnet: " + zugeordnet);
-		System.out.println("Kurs: " + fach);
+		System.out.println("Kurs: " + fach.getFachbezeichnung());
 		System.out.println("Schüler: " + getSchuelername());
 	}
 }

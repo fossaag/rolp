@@ -18,7 +18,6 @@
 package org.fossa.rolp.ui.schueler;
 
 import org.fossa.rolp.RolpApplication;
-import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
@@ -57,7 +56,7 @@ public class SchuelerAnlegenForm extends FossaForm implements ClickListener {
 			SchuelerLaso schueler = (SchuelerLaso) fossaLaso;
 			KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(((RolpApplication) getApplication()).getLoginLehrer());
 			schueler.setKlasse(klasse.getPojo());
-			BeanItemContainer<FachLaso> pflichtfaecherOfKlasse = FachContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo());
+			BeanItemContainer<FachLaso> pflichtfaecherOfKlasse = ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo());
 			for (FachLaso fach : pflichtfaecherOfKlasse.getItemIds()) {
 				ZuordnungFachSchuelerLaso zuordnungFS = new ZuordnungFachSchuelerLaso();
 				zuordnungFS.setSchueler(schueler.getPojo());

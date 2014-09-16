@@ -19,12 +19,7 @@ package org.fossa.rolp.data.fach;
 
 import java.io.Serializable;
 
-import org.fossa.rolp.data.klasse.KlassePojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
-import org.fossa.rolp.data.schueler.SchuelerContainer;
-import org.fossa.rolp.data.schueler.SchuelerLaso;
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerLaso;
 import org.fossa.vaadin.laso.FossaLaso;
 
 import com.vaadin.data.util.BeanItemContainer;
@@ -113,21 +108,6 @@ public class FachContainer extends BeanItemContainer<FachLaso> implements Serial
 		return fachContainer;
 	}
 	
-	public static BeanItemContainer<FachLaso> getAllPflichtfaecherOfKlasse(KlassePojo klasse) {
-		BeanItemContainer<FachLaso> pflichtfaecherOfKlasse = new BeanItemContainer<FachLaso>(FachLaso.class);
-		BeanItemContainer<SchuelerLaso> alleSchueler = SchuelerContainer.getAllSchuelerOfKlasse(klasse);
-		if (alleSchueler.size() == 0) {
-			return pflichtfaecherOfKlasse;
-		}
-		SchuelerLaso schueler = alleSchueler.firstItemId();
-		for (ZuordnungFachSchuelerLaso zuordnungFS: ZuordnungFachSchuelerContainer.getInstance().getItemIds()) {
-			if (zuordnungFS.getSchueler().getId().equals(schueler.getId()) && zuordnungFS.getFach().getFachtyp().isPflichtfach()) {
-				pflichtfaecherOfKlasse.addBean(new FachLaso(zuordnungFS.getFach()));
-			}
-		}
-		return pflichtfaecherOfKlasse;   
-	}
-
 	public static BeanItemContainer<FachLaso> getAllKurse() {
 		BeanItemContainer<FachLaso> kurse = new BeanItemContainer<FachLaso>(FachLaso.class);
 		for (FachLaso fach: getInstance().getItemIds()) {
@@ -159,7 +139,11 @@ public class FachContainer extends BeanItemContainer<FachLaso> implements Serial
 	
 	public void deleteFach(FachLaso fach) {
 		FossaLaso.deleteIfExists(fach.getPojo());
-		fachContainer = null;
-		getInstance();
+		for (FachLaso aFach : getInstance().getItemIds()) {
+			if (fach.getId().equals(aFach.getId())) {
+				fachContainer.removeItem(aFach);
+				return;
+			}
+		}
 	}
 }

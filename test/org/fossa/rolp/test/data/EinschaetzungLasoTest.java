@@ -18,6 +18,7 @@ public class EinschaetzungLasoTest {
 	private TestEinschaetzungLaso einschaetzungLaso;
 
 	class TestEinschaetzungLaso extends EinschaetzungLaso {		
+		private static final long serialVersionUID = -2162428687327258376L;
 		public TestEinschaetzungLaso() {
 			super();
 		}		

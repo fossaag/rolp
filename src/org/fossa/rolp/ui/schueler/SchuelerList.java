@@ -68,13 +68,11 @@ public class SchuelerList extends Table {
 	
 	private void buildContainer(RolpApplication app) {
 		KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(app.getLoginLehrer());
-		BeanItemContainer<SchuelerLaso> unsortedContainer;
 		if (klasse != null) {
-			unsortedContainer = SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo());
+			setContainerDataSource(SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()));
 		} else {
-			unsortedContainer = new BeanItemContainer<SchuelerLaso>(SchuelerLaso.class);
+			setContainerDataSource(new BeanItemContainer<SchuelerLaso>(SchuelerLaso.class));
 		}
-		setContainerDataSource(SchuelerContainer.sortContainer(unsortedContainer));
 	}
 
 	public void initialize() {

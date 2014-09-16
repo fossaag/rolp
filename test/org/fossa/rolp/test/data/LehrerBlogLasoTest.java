@@ -29,6 +29,7 @@ public class LehrerBlogLasoTest {
 
 
 	class TestLehrerBlogLaso extends LehrerBlogLaso {		
+		private static final long serialVersionUID = 1534289749754405990L;
 		public TestLehrerBlogLaso() {
 			super();
 		}		

@@ -25,6 +25,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class LehrerBlogLaso extends FossaLaso {
 	
+	private static final long serialVersionUID = 6374599569558727882L;
+
 	public static final String ZEITSTEMPEL_COLUMN = "zeitstempel";
 	
 	private LehrerBlogPojo blog;

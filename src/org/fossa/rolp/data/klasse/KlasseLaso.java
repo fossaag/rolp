@@ -25,6 +25,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class KlasseLaso extends FossaLaso {
 
+	private static final long serialVersionUID = -1089342731703984092L;
+
 	public static final String KLASSENEINSCHAETZUNG_COLUMN = "klasseneinschaetzungString";
 	
 	private KlassePojo klasse;
@@ -65,15 +67,6 @@ public class KlasseLaso extends FossaLaso {
 		writeToDatabase();
 	}
 	
-	public int getAbgangsjahr() {
-		return klasse.getAbgangsjahr();
-	}
-
-	public void setAbgangsjahr(int abgangsjahr) {
-		klasse.setAbgangsjahr(abgangsjahr);
-		writeToDatabase();
-	}
-
 	public LehrerPojo getKlassenlehrer(){
 		return klasse.getKlassenlehrer();
 	}

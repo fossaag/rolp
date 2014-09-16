@@ -18,10 +18,13 @@
 package org.fossa.rolp.data.zuordnung.fachschueler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.klasse.KlassePojo;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
 import org.fossa.rolp.data.schueler.SchuelerPojo;
@@ -135,6 +138,8 @@ public class ZuordnungFachSchuelerContainer extends BeanItemContainer<ZuordnungF
 				zuordnungFSOfSchueler.addBean(zuordnungFS);
 			}
 		}
+		
+		zuordnungFSOfSchueler.sort(new Object[]{ZuordnungFachSchuelerLaso.FACHTYP_ID_COLUMN, FachPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {true, true});
 		return zuordnungFSOfSchueler;
 	}
 
@@ -191,10 +196,33 @@ public class ZuordnungFachSchuelerContainer extends BeanItemContainer<ZuordnungF
 		}
 		return false;
 	}
+	
+	public static BeanItemContainer<FachLaso> getAllPflichtfaecherOfKlasse(KlassePojo klasse) {
+		BeanItemContainer<FachLaso> pflichtfaecherOfKlasse = new BeanItemContainer<FachLaso>(FachLaso.class);
+		BeanItemContainer<SchuelerLaso> alleSchueler = SchuelerContainer.getAllSchuelerOfKlasse(klasse);
+		Collection<Long> ids = new ArrayList<Long>();
+		if (alleSchueler.size() == 0) {
+			return pflichtfaecherOfKlasse;
+		}
+		for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse).getItemIds()) {
+			for (FachPojo fach : getAllFaecherOfSchueler(schueler.getPojo()).getItemIds()) {
+				if (fach.getFachtyp().isPflichtfach() && !ids.contains(fach.getId())) {
+					pflichtfaecherOfKlasse.addBean(new FachLaso(fach));
+					ids.add(fach.getId());
+				}
+			}
+		}
+		pflichtfaecherOfKlasse.sort(new Object[] {FachPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {true});
+		return pflichtfaecherOfKlasse;
+	}
 
-	public void deleteZuordnungFS(ZuordnungFachSchuelerLaso zuordnungFachSchueler) {
-		FossaLaso.deleteIfExists(zuordnungFachSchueler.getPojo());
-		zuordnungFachSchuelerContainer = null;
-		getInstance();
+	public void deleteZuordnungFS(ZuordnungFachSchuelerLaso zuordnungFS) {
+		FossaLaso.deleteIfExists(zuordnungFS.getPojo());
+		for (ZuordnungFachSchuelerLaso aZuordnungFS : getInstance().getItemIds()) {
+			if (zuordnungFS.getId().equals(aZuordnungFS.getId())) {
+				zuordnungFachSchuelerContainer.removeItem(aZuordnungFS);
+				return;
+			}
+		}
 	}
 }

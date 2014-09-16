@@ -26,7 +26,7 @@ public class LehrerLasoTest {
 	private FossaUserLaso user;
 	
 	class TestLehrerLaso extends LehrerLaso {		
-		
+		private static final long serialVersionUID = -7386648083093165125L;
 		public TestLehrerLaso(LehrerPojo lehrer) {
 			super(lehrer);
 			if (lehrer.getUser() != null) {
@@ -46,7 +46,7 @@ public class LehrerLasoTest {
 	}
 	
 	class TestFossaUserLaso extends FossaUserLaso {		
-		
+		private static final long serialVersionUID = 8536096301511175118L;
 		public TestFossaUserLaso() {
 			super();
 		}		

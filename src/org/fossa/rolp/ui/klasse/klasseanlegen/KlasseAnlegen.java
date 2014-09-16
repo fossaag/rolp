@@ -34,7 +34,7 @@ public class KlasseAnlegen extends FossaWindow {
 	public KlasseAnlegen(FossaApplication app, KlasseLaso klasse) {
 		super(app);
 		this.klasseLaso = klasse;
-		setCaption(" - Klasse anlegen - ");
+		setCaption(" - Klasse - ");
 		setWidth("500px");
 		center();
 		CustomLayout layout = new CustomLayout("./subWindows/formAnlegen");
@@ -47,7 +47,7 @@ public class KlasseAnlegen extends FossaWindow {
 	private KlasseAnlegenForm getKlasseAnlegenForm() {
 		if (formKlasseAnlegen == null) {
 			formKlasseAnlegen = new KlasseAnlegenForm();
-			if (klasseLaso == null) {
+			if (klasseLaso.getId() == null) {
 				klasseLaso = new KlasseLaso();
 				formKlasseAnlegen.addTemporaryItem(klasseLaso);
 			} else {

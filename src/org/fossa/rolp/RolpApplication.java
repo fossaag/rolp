@@ -27,10 +27,11 @@ import org.fossa.rolp.ui.dashboard.FachlehrerDashboard;
 import org.fossa.rolp.ui.dashboard.KlassenlehrerDashboard;
 import org.fossa.rolp.ui.fach.KurseZuordnen;
 import org.fossa.rolp.ui.fach.PflichtfaecherlisteAnzeigen;
-import org.fossa.rolp.ui.fach.SchuelerfachlisteAnzeigen;
-import org.fossa.rolp.ui.schueler.FachschuelerlisteAnzeigen;
+import org.fossa.rolp.ui.klasse.klasseanlegen.KlassenlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.SchuelerlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.versetzungsvermerk.VersetzungsvermerklisteAnzeigen;
+import org.fossa.rolp.ui.zuordnung.fachschueler.FachschuelerlisteAnzeigen;
+import org.fossa.rolp.ui.zuordnung.fachschueler.SchuelerfachlisteAnzeigen;
 import org.fossa.rolp.util.Config;
 import org.fossa.vaadin.FossaApplication;
 import org.fossa.vaadin.auth.FossaAuthorizer;
@@ -84,6 +85,7 @@ public class RolpApplication extends FossaApplication implements Button.ClickLis
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
 		logo.setWidth("100px");
+		logo.setHeight("96px");
 		headlineApp.addComponent(logo,"logo");
 		headlineApp.addComponent(authorizerLayout,"authorizerLayout");
 		headlineApp.addStyleName("headlineApp");
@@ -204,6 +206,8 @@ public class RolpApplication extends FossaApplication implements Button.ClickLis
 					((KlassenlehrerDashboard) window).refreshPage();
 				} else if (window instanceof FachlehrerDashboard) {
 					((FachlehrerDashboard) window).refreshPage();
+				} else if (window instanceof KlassenlisteAnzeigen) {
+					((KlassenlisteAnzeigen) window).refreshPage();
 				}
 			}
 		}

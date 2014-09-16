@@ -20,6 +20,7 @@ import com.vaadin.data.util.BeanItemContainer;
 public class HintUtilsTest {
 	
 	class TestZuordnungFachSchuelerLaso extends ZuordnungFachSchuelerLaso {		
+		private static final long serialVersionUID = -2180080600495210535L;
 		public TestZuordnungFachSchuelerLaso() {
 			super();
 		}		

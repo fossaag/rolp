@@ -21,8 +21,8 @@ import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.ui.fach.FaecherList;
 import org.fossa.rolp.ui.lehrer.LehrerBlog;
-import org.fossa.rolp.ui.schueler.FachschuelerList;
-import org.fossa.rolp.ui.schueler.FachschuelerlisteAnzeigen;
+import org.fossa.rolp.ui.zuordnung.fachschueler.FachschuelerList;
+import org.fossa.rolp.ui.zuordnung.fachschueler.FachschuelerlisteAnzeigen;
 import org.fossa.vaadin.ui.FossaWindow;
 
 import com.vaadin.terminal.Sizeable;
@@ -65,6 +65,7 @@ public class FachlehrerDashboard extends FossaWindow implements Button.ClickList
 		Embedded logo = new Embedded(null, new ThemeResource(MAINPAGE_PANEL_ANMELDEN_LOGO_PATH));
 		logo.setType(Embedded.TYPE_IMAGE);
 		logo.setWidth("100px");
+		logo.setHeight("96px");
 		
 		headline.addComponent(logo,"logo");
 		
@@ -114,9 +115,11 @@ public class FachlehrerDashboard extends FossaWindow implements Button.ClickList
 			close();
 		} else if (source == fachspezifischeDetailsButton) {
 			FachLaso fach = (FachLaso) faecherList.getValue();
-			if (fach != null) {
-				fachspezifischeDetailsAnzeigen(fach);
+			if (fach == null) {
+				app.getMainWindow().showNotification("kein Fach ausgewählt");
+				return;
 			}
+			fachspezifischeDetailsAnzeigen(fach);
 		}
 	}
 

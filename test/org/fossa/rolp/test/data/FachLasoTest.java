@@ -31,6 +31,7 @@ public class FachLasoTest {
 
 
 	class TestFachLaso extends FachLaso {		
+		private static final long serialVersionUID = -5817503987586227692L;
 		public TestFachLaso() {
 			super();
 		}		

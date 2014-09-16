@@ -21,6 +21,7 @@ import java.io.Serializable;
 
 import org.fossa.vaadin.auth.data.FossaUserLaso;
 import org.fossa.vaadin.auth.data.FossaUserPojo;
+import org.fossa.vaadin.laso.FossaLaso;
 
 import com.vaadin.data.util.BeanItemContainer;
 
@@ -74,5 +75,15 @@ public class LehrerContainer extends BeanItemContainer<LehrerLaso> implements Se
 			}
 		}
 		return null;
+	}
+	
+	public void deleteLehrer(LehrerLaso lehrer) {
+		FossaLaso.deleteIfExists(lehrer.getPojo());
+		for (LehrerLaso aLehrer : getInstance().getItemIds()) {
+			if (lehrer.getId().equals(aLehrer.getId())) {
+				lehrerContainer.removeItem(aLehrer);
+				return;
+			}
+		}
 	}
 }

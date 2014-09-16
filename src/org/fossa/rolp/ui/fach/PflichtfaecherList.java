@@ -23,6 +23,7 @@ import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
 
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
@@ -68,6 +69,6 @@ public class PflichtfaecherList extends Table {
 	private void buildContainer() {
 		LehrerPojo klassenlehrer =  app.getLoginLehrer();
 		KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(klassenlehrer);
-		setContainerDataSource(FachContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()));
+		setContainerDataSource(ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()));
 	}
 }

@@ -23,6 +23,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class EinschaetzungLaso extends FossaLaso {
 
+	private static final long serialVersionUID = -1296436051855969848L;
+	
 	private EinschaetzungPojo einschaetzung;
 	
 	public EinschaetzungLaso(EinschaetzungPojo einschaetzung) {

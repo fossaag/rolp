@@ -71,16 +71,16 @@ public class PdfStreamSource implements StreamSource {
 	public PdfStreamSource(FossaApplication app, LebData lebData, LebCreator lebCreator) throws DocumentException, IOException, PdfFormatierungsException {
 		this.lebData = lebData;
 		this.lebCreator = lebCreator;
-		BaseFont swissNormal = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeNormalFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
-		BaseFont swissBold = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeBoldFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
-		BaseFont swissThin = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeThinFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
+		BaseFont fontNormal = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeNormalFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
+		BaseFont fontBold = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeBoldFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
+		BaseFont fontThin = BaseFont.createFont(app.getContext().getBaseDirectory() + Config.getRelativeThinFontPath(), BaseFont.CP1252, BaseFont.EMBEDDED);
 
-		lernentwicklungsberichtUeberschriftFont = new Font(swissThin, 22, Font.NORMAL);
-		standardTextFont = new Font(swissNormal, KlassenstufenUtils.getLebFontSize(lebData.getKlassenname()), Font.NORMAL);
-		standardTextBoldFont = new Font(swissBold, KlassenstufenUtils.getLebFontSize(lebData.getKlassenname()), Font.NORMAL);
-		headerFont = new Font(swissNormal, 12, Font.NORMAL);
-		footerFont = new Font(swissNormal, 10, Font.NORMAL);
-		fusszeilenFont = new Font(swissNormal, 8, Font.NORMAL);
+		lernentwicklungsberichtUeberschriftFont = new Font(fontThin, 22, Font.NORMAL);
+		standardTextFont = new Font(fontNormal, KlassenstufenUtils.getLebFontSize(lebData.getKlassenname()), Font.NORMAL);
+		standardTextBoldFont = new Font(fontBold, KlassenstufenUtils.getLebFontSize(lebData.getKlassenname()), Font.NORMAL);
+		headerFont = new Font(fontNormal, 12, Font.NORMAL);
+		footerFont = new Font(fontNormal, 10, Font.NORMAL);
+		fusszeilenFont = new Font(fontNormal, 8, Font.NORMAL);
 		zeilenabstandsfaktor = KlassenstufenUtils.getLebZeilenabstandAsFactor(lebData.getKlassenname());
 		document = null;
 		try {

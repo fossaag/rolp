@@ -24,6 +24,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class LehrerLaso extends FossaLaso {
 
+	private static final long serialVersionUID = 7486587832858711319L;
+	
 	protected FossaUserLaso userLaso;
 	private LehrerPojo lehrer;
 

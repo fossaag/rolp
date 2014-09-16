@@ -88,9 +88,11 @@ public class VersetzungsvermerklisteAnzeigen extends FossaWindow implements Butt
 			close();
 		}else if (source == versetzungsvermerkBearbeitennButton){
 			SchuelerLaso schueler = (SchuelerLaso) schuelerList.getValue();
-			if (schueler != null) {
-				versetzungsvermerkBearbeiten(schueler);
-			} 
+			if (schueler == null) {
+				app.getMainWindow().showNotification("kein Schüler ausgewählt");
+				return;
+			}
+			versetzungsvermerkBearbeiten(schueler);
 		}
 	}
 	

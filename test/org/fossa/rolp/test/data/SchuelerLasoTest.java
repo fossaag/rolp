@@ -24,6 +24,7 @@ public class SchuelerLasoTest {
 	private EinschaetzungLaso schuelereinschaetzung;
 	
 	class TestSchuelerLaso extends SchuelerLaso {		
+		private static final long serialVersionUID = -5703353659674369783L;
 		public TestSchuelerLaso() {
 			super();
 		}		

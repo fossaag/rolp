@@ -23,6 +23,7 @@ public class ZuordnungFachSchuelerLasoTest {
 	private EinschaetzungLaso facheinschaetzung;
 
 	class TestZuordnungFachSchuelerLaso extends ZuordnungFachSchuelerLaso {		
+		private static final long serialVersionUID = -1567424097746854259L;
 		public TestZuordnungFachSchuelerLaso() {
 			super();
 		}		
@@ -129,6 +130,15 @@ public class ZuordnungFachSchuelerLasoTest {
 		zuordnungFachSchuelerLaso.setFacheinschaetzung(facheinschaetzung);
 		assertTrue(triedToWrite);
 		assertTrue(zuordnungFachSchuelerLaso.getFacheinschaetzung().equals(facheinschaetzung));
+	}
+	
+	@Test
+	public void testFacheinschaetzungNull() {
+		assertTrue(zuordnungFachSchuelerLaso.getFacheinschaetzung() == null);
+		assertFalse(triedToWrite);
+		zuordnungFachSchuelerLaso.setFacheinschaetzung(null);
+		assertTrue(triedToWrite);
+		assertTrue(zuordnungFachSchuelerLaso.getFacheinschaetzung() == null);
 	}
 	
 	@Test

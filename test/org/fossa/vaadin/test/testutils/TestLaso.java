@@ -7,6 +7,8 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 public class TestLaso extends FossaLaso {
 	
+	private static final long serialVersionUID = -8434347212210962273L;
+	
 	public static final String TEST_STRING = "teststring";
 	public static final Long TEST_ID = 99999L;
 	public Long testId = TEST_ID;

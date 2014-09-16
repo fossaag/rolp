@@ -92,6 +92,7 @@ public class SchuelerContainer extends BeanItemContainer<SchuelerLaso> implement
 				schuelerOfKlasse.addBean(schueler);
 			}
 		}
+		schuelerOfKlasse.sort(new Object[] {SchuelerPojo.NAME_COLUMN}, new boolean[] {true});
 		return schuelerOfKlasse;   
 	}
 
@@ -107,21 +108,6 @@ public class SchuelerContainer extends BeanItemContainer<SchuelerLaso> implement
 		
 	}
 	
-	public static BeanItemContainer<SchuelerLaso> sortContainer(BeanItemContainer<SchuelerLaso> unsortedContainer) {
-		
-		BeanItemContainer<SchuelerLaso> eintraege = new BeanItemContainer<SchuelerLaso>(SchuelerLaso.class);
-		
-		for (SchuelerLaso schuelerItem : unsortedContainer.getItemIds()) {
-			eintraege.addBean(schuelerItem);
-		}
-
-		eintraege.sort(new Object[] {SchuelerPojo.NAME_COLUMN}, new boolean[] {true});
-				
-		BeanItemContainer<SchuelerLaso> resultSchueler = new BeanItemContainer<SchuelerLaso>(SchuelerLaso.class);
-		resultSchueler.addAll(eintraege.getItemIds());
-		return resultSchueler;
-	}
-	
 	public static SchuelerLaso getSchuelerLasoAktuell(SchuelerPojo schuelerPojo) {
 		for (SchuelerLaso schueler : SchuelerContainer.getInstance().getItemIds()) {
 			if (schueler.getId().equals(schuelerPojo.getId())) {
@@ -133,7 +119,11 @@ public class SchuelerContainer extends BeanItemContainer<SchuelerLaso> implement
 
 	public void deleteSchueler(SchuelerLaso schueler) {
 		FossaLaso.deleteIfExists(schueler.getPojo());
-		schuelerContainer = null;
-		getInstance();
+		for (SchuelerLaso aSchueler : getInstance().getItemIds()) {
+			if (schueler.getId().equals(aSchueler.getId())) {
+				schuelerContainer.removeItem(aSchueler);
+				return;
+			}
+		}
 	}
 }
