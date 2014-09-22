@@ -54,7 +54,9 @@ public class UpgradeUtils {
 	}
 	
 	private static void letzteKlassenLoeschen() {
-		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
+		BeanItemContainer<KlasseLaso> klassen = new BeanItemContainer<KlasseLaso>(KlasseLaso.class);
+		klassen.addAll(KlasseContainer.getInstance().getItemIds());
+		for (KlasseLaso klasse : klassen.getItemIds()) {
 			if (klasse.getKlassentyp().isKlassenstufenorientiert() && KlassenstufenUtils.getKlassenstufe(klasse.getKlassenname()) == LebSettingsContainer.getLebSettings().getLetzteKlassenstufe()) {
 				for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
 					SchuelerContainer.getInstance().deleteSchueler(schueler);
