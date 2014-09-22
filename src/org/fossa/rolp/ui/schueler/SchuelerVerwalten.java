@@ -24,14 +24,14 @@ import org.fossa.vaadin.ui.FossaWindow;
 
 import com.vaadin.ui.CustomLayout;
 
-public class SchuelerAnlegen extends FossaWindow {
+public class SchuelerVerwalten extends FossaWindow {
 
 	private static final long serialVersionUID = -6514418795515349474L;
 
-	private SchuelerAnlegenForm formSchuelerAnlegen;
+	private SchuelerVerwaltenForm formSchuelerAnlegen;
 	private SchuelerLaso schuelerLaso;
 
-	public SchuelerAnlegen(FossaApplication app, SchuelerLaso schueler) {
+	public SchuelerVerwalten(FossaApplication app, SchuelerLaso schueler) {
 		super(app);
 		this.schuelerLaso = schueler;
 		setCaption(" - Schülerdaten - ");
@@ -44,9 +44,9 @@ public class SchuelerAnlegen extends FossaWindow {
 		layout.addComponent(formSchuelerAnlegen, "form");
 	}
 
-	private SchuelerAnlegenForm getSchuelerAnlegenForm() {
+	private SchuelerVerwaltenForm getSchuelerAnlegenForm() {
 		if (formSchuelerAnlegen == null) {
-			formSchuelerAnlegen = new SchuelerAnlegenForm();
+			formSchuelerAnlegen = new SchuelerVerwaltenForm();
 			if (schuelerLaso.getId() == null) {
 				formSchuelerAnlegen.addTemporaryItem(schuelerLaso);
 			} else {

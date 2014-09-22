@@ -20,6 +20,7 @@ package org.fossa.rolp.data.klasse;
 import java.util.List;
 
 import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.laso.FossaLaso;
 
@@ -28,6 +29,7 @@ public class KlasseLaso extends FossaLaso {
 	private static final long serialVersionUID = -1089342731703984092L;
 
 	public static final String KLASSENEINSCHAETZUNG_COLUMN = "klasseneinschaetzungString";
+	public static final String KLASSENTYP_COLUMN = "klassentypString";
 	
 	private KlassePojo klasse;
 	private EinschaetzungLaso klasseneinschaetzungLaso;
@@ -76,6 +78,15 @@ public class KlasseLaso extends FossaLaso {
 		writeToDatabase();
 	}
 	
+	public KlassentypPojo getKlassentyp() {
+		return klasse.getKlassentyp();
+	}
+
+	public void setKlassentyp(KlassentypPojo klassentyp) {
+		klasse.setKlassentyp(klassentyp);
+		writeToDatabase();
+	}
+	
 	public EinschaetzungLaso getKlasseneinschaetzung(){
 		return klasseneinschaetzungLaso;
 	}
@@ -88,6 +99,13 @@ public class KlasseLaso extends FossaLaso {
 			klasse.setKlasseneinschaetzung(null);
 		}		
 		writeToDatabase();
+	}
+	
+	public String getKlassentypString() {
+		if (klasse.getKlassentyp() == null){
+			return " - ";
+		}
+		return klasse.getKlassentyp().getKlassentyp();
 	}
 
 	@Override

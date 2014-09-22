@@ -24,9 +24,9 @@ import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojoContainer;
 import org.fossa.rolp.data.klasse.KlasseContainer;
-import org.fossa.rolp.data.lehrer.LehrerBlogContainer;
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogContainer;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
 import org.fossa.rolp.data.schueler.SchuelerPojo;
@@ -116,12 +116,12 @@ public class KurseZuordnen extends FossaWindow implements Button.ClickListener, 
 		if (fach == null) {
 			fach = new FachLaso();
 		}
-		faecherAnlegen = new FaecherAnlegen(app, fach, FachtypPojoContainer.getInstance().getKurs());
+		faecherAnlegen = new FaecherAnlegen(app, fach, FachtypPojoContainer.getKurs());
 		return faecherAnlegen;
 	}	
 	
 	private FachSchuelerZuordnen getSchuelerZuordnen(FachLaso fach) throws FossaLasoLockedException {
-		schuelerZuordnen = new FachSchuelerZuordnen(app, getFachSchuelerZuordnenList(fach), "Schüler zum Kurs hinzufügen");
+		schuelerZuordnen = new FachSchuelerZuordnen(app, getFachSchuelerZuordnenList(fach), "Schüler zum Kurs " + fach.getFachbezeichnung() + " hinzufügen");
 		return schuelerZuordnen;
 	}
 	

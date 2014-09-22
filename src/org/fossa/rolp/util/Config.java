@@ -17,8 +17,8 @@
 
 package org.fossa.rolp.util;
 
-import org.fossa.rolp.data.ConfigPojo;
-import org.fossa.rolp.data.ConfigPojoContainer;
+import org.fossa.rolp.data.config.ConfigPojo;
+import org.fossa.rolp.data.config.ConfigPojoContainer;
 
 public class Config {
 	

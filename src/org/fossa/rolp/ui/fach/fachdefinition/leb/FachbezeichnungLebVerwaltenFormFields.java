@@ -15,30 +15,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.ui.schueler;
+package org.fossa.rolp.ui.fach.fachdefinition.leb;
 
-import org.fossa.rolp.data.schueler.SchuelerPojo;
+import org.fossa.rolp.data.fach.fachdefinition.leb.FachbezeichnungLebPojo;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 
-public class SchuelerFormFields extends DefaultFieldFactory {
+public class FachbezeichnungLebVerwaltenFormFields extends DefaultFieldFactory {
 
-	private static final long serialVersionUID = -7125663607032486479L;
+	private static final long serialVersionUID = -3290849402977345024L;
 
 	@Override
 	public Field createField(Item item, Object propertyId, Component uiContext) {
 		Field field = super.createField(item, propertyId, uiContext);
-		if (propertyId.equals(SchuelerPojo.VORNAME_COLUMN)) {
-			field.setCaption("Vorname: ");
+		if (propertyId.equals(FachbezeichnungLebPojo.BEZEICHNUNG_COLUMN)) {
 			field.setRequired(true);
-		} else if (propertyId.equals(SchuelerPojo.NAME_COLUMN)) {
-			field.setCaption("Name: ");
-			field.setRequired(true);
-		} else if (propertyId.equals(SchuelerPojo.VERSETZUNGSVERMERK_COLUMN)) {
-			field.setCaption((String) item.getItemProperty(SchuelerPojo.VORNAME_COLUMN).getValue());
 		}
 		return field;
 	}

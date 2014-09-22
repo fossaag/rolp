@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.auth.data.FossaUserPojo;
@@ -19,15 +20,18 @@ public class FachLasoTest {
 	private static final String lastnameEins = "Lachnitt";
 	private static final String firstnameZwei = "Frank";
 	private static final String lastnameZwei = "Kaddereit";
+	private static final String firstnameDrei = "Jens";
+	private static final String lastnameDrei = "Vogel";
 	public boolean triedToWrite = false;
 	private TestFachLaso fachLaso;
 	private Long id;
-	private String fachbezeichnung;
-	private FachtypPojo fachtyp;
+	private FachdefinitionPojo fachdefinition;
 	private LehrerPojo fachlehrerEins;
 	private LehrerPojo fachlehrerZwei;
+	private LehrerPojo fachlehrerDrei;
 	private FossaUserPojo userEins;
 	private FossaUserPojo userZwei;
+	private FossaUserPojo userDrei;
 
 
 	class TestFachLaso extends FachLaso {		
@@ -48,9 +52,9 @@ public class FachLasoTest {
 	public void setUp() throws Exception {
 		fachLaso = new TestFachLaso();
 		id = 87L;
-		fachbezeichnung = "Quantenmechanik_17alpha";
-		fachtyp = new FachtypPojo();
-		fachtyp.setId(11L);
+		fachdefinition = new FachdefinitionPojo();
+		fachdefinition.setId(86L);
+		fachdefinition.setFachbezeichnung("Quantenmechanik_17alpha");
 		userEins = new FossaUserPojo();
 		userEins.setFirstname(firstnameEins);
 		userEins.setLastname(lastnameEins);
@@ -63,6 +67,12 @@ public class FachLasoTest {
 		fachlehrerZwei = new LehrerPojo();
 		fachlehrerZwei.setId(26L);
 		fachlehrerZwei.setUser(userZwei);
+		userDrei = new FossaUserPojo();
+		userDrei.setFirstname(firstnameDrei);
+		userDrei.setLastname(lastnameDrei);
+		fachlehrerDrei = new LehrerPojo();
+		fachlehrerDrei.setId(26L);
+		fachlehrerDrei.setUser(userDrei);
 	}
 
 	@After
@@ -82,7 +92,7 @@ public class FachLasoTest {
 	public void testFachLaso() {
 		TestFachLaso fachLasoTest = new TestFachLaso();
 		assertTrue(fachLasoTest.getPojo() != null);
-		assertTrue(fachLasoTest.getFachtyp() == null);
+		assertTrue(fachLasoTest.getFachdefinition() == null);
 		assertFalse(triedToWrite);
 	}
 
@@ -90,11 +100,11 @@ public class FachLasoTest {
 	public void testFachLasoFachPojo() {
 		FachPojo fachPojo = new FachPojo();
 		fachPojo.setId(id);
-		assertTrue(new TestFachLaso(fachPojo).getFachtyp() == null);
-		fachPojo.setFachtyp(fachtyp);
+		assertTrue(new TestFachLaso(fachPojo).getFachdefinition() == null);
+		fachPojo.setFachdefinition(fachdefinition);
 		TestFachLaso fachLasoTest = new TestFachLaso(fachPojo);
 		assertTrue(fachLasoTest.getPojo().getId().equals(id));
-		assertTrue(fachLasoTest.getFachtyp().equals(fachtyp));
+		assertTrue(fachLasoTest.getFachdefinition().equals(fachdefinition));
 		assertFalse(triedToWrite);
 	}
 
@@ -108,21 +118,23 @@ public class FachLasoTest {
 	}
 
 	@Test
-	public void testFachbezeichnung() {
-		assertTrue(fachLaso.getFachbezeichnung().equals(""));
+	public void testFachdefinition() {
+		assertTrue(fachLaso.getFachdefinition() == null);
 		assertFalse(triedToWrite);
-		fachLaso.setFachbezeichnung(fachbezeichnung);
+		fachLaso.setFachdefinition(fachdefinition);
 		assertTrue(triedToWrite);
-		assertTrue(fachLaso.getFachbezeichnung().equals(fachbezeichnung));
+		assertTrue(fachLaso.getFachdefinition().equals(fachdefinition));
 	}
 
 	@Test
-	public void testFachtyp() {
-		assertTrue(fachLaso.getFachtyp() == null);
+	public void testFachbezeichnung() {
+		assertTrue(fachLaso.getFachdefinition() == null);
+		assertTrue(fachLaso.getFachbezeichnung().equals(" - "));
 		assertFalse(triedToWrite);
-		fachLaso.setFachtyp(fachtyp);
+		fachLaso.setFachdefinition(fachdefinition);
 		assertTrue(triedToWrite);
-		assertTrue(fachLaso.getFachtyp().equals(fachtyp));
+		assertTrue(fachLaso.getFachbezeichnung().equals(fachdefinition.getFachbezeichnung()));
+		assertTrue(LasoTestUtils.checkIfClassHasMatchingGetMethod(FachLaso.class, FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN));
 	}
 	
 	@Test
@@ -150,6 +162,18 @@ public class FachLasoTest {
 	}
 	
 	@Test
+	public void testFachlehrerDrei() {
+		assertTrue(fachLaso.getFachlehrerDrei() == null);
+		assertTrue(fachLaso.getFachlehrerDreiString().equals(" - "));
+		assertFalse(triedToWrite);
+		fachLaso.setFachlehrerDrei(fachlehrerDrei);
+		assertTrue(triedToWrite);
+		assertTrue(fachLaso.getFachlehrerDreiString().equals(firstnameDrei + " " + lastnameDrei));
+		assertTrue(fachLaso.getFachlehrerDrei().equals(fachlehrerDrei));
+		assertTrue(LasoTestUtils.checkIfClassHasMatchingGetMethod(FachLaso.class, FachLaso.FACHLEHRER_DREI_COLUMN));
+	}
+	
+	@Test
 	public void testZugewieseneSchueler() {
 		assertTrue(LasoTestUtils.checkIfClassHasMatchingGetMethod(FachLaso.class, FachLaso.ZUGEWIESENE_SCHUELER_COLUMN));
 	}
@@ -163,7 +187,10 @@ public class FachLasoTest {
 	public void testGetKlasse() {
 		FachtypPojo fachtypKurs = new FachtypPojo();
 		fachtypKurs.setId(2L);
-		fachLaso.setFachtyp(fachtypKurs);		
+		assertTrue(fachLaso.getKlasse().equals(" - "));
+		fachLaso.setFachdefinition(fachdefinition);
+		assertTrue(fachLaso.getKlasse().equals(" - "));
+		fachdefinition.setFachtyp(fachtypKurs);
 		assertTrue(fachLaso.getKlasse().equals(" - "));
 	}
 }

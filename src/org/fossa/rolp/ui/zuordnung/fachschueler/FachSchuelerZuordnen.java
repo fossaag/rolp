@@ -65,7 +65,7 @@ public class FachSchuelerZuordnen extends FossaWindow implements Button.ClickLis
 	public void buttonClick(ClickEvent event) {
 		final Button source = event.getButton();
 		if (source == windowCloseButton) {
-			if (fachSchuelerZuordnenList.fach.getFachtyp().isPflichtfach() && fachSchuelerZuordnenList.nichtsZugeordnet()) {
+			if (fachSchuelerZuordnenList.fach.getFachdefinition().getFachtyp().isPflichtfach() && fachSchuelerZuordnenList.nichtsZugeordnet()) {
 				getWindow().showNotification("Mindestens ein Schüler muss dem Pflichtfach zugeordnet bleiben");
 				fachSchuelerZuordnenList.refresh();
 				return;

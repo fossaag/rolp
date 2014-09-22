@@ -38,7 +38,7 @@ public class HintUtils {
 	public static String createHinweistextSchuelerKeineKurse(BeanItemContainer<ZuordnungFachSchuelerLaso> fachSchuelerZuordnungen, SchuelerLaso schueler) {
 		boolean schuelerHatKurs = false;
 		for (ZuordnungFachSchuelerLaso zuordnungFS: fachSchuelerZuordnungen.getItemIds()) {
-			if (zuordnungFS.getFach().getFachtyp().isKurs() && zuordnungFS.getSchueler().getId().equals(schueler.getId())) {
+			if (zuordnungFS.getFach().getFachdefinition().getFachtyp().isKurs() && zuordnungFS.getSchueler().getId().equals(schueler.getId())) {
 				schuelerHatKurs = true;
 			}				
 		}

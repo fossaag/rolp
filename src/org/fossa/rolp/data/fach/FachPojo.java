@@ -27,7 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.data.FossaPojo;
 
@@ -38,26 +38,27 @@ public class FachPojo implements FossaPojo, Serializable {
 	private static final long serialVersionUID = 8656811931816148805L;
 
 	public static final String ID_COLUMN = "id";
-	public static final String FACHBEZEICHNUNG_COLUMN = "fachbezeichnung";
-	public static final String FACHTYP_COLUMN = "fachtyp";
+	public static final String FACHDEFINITION_COLUMN = "fachdefinition";
 	public static final String FACHLEHRER_EINS_COLUMN = "fachlehrerEins";
 	public static final String FACHLEHRER_ZWEI_COLUMN = "fachlehrerZwei";
+	public static final String FACHLEHRER_DREI_COLUMN = "fachlehrerDrei";
 	
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
 	private Long id;
-	@Column(name = FACHBEZEICHNUNG_COLUMN)
-	private String fachbezeichnung = "";
 	@ManyToOne
-	@JoinColumn(name = FACHTYP_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
-	private FachtypPojo fachtyp;
+	@JoinColumn(name = FACHDEFINITION_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
+	private FachdefinitionPojo fachdefinition;
 	@ManyToOne()
 	@JoinColumn(name = FACHLEHRER_EINS_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
 	private LehrerPojo fachlehrerEins = null;
 	@ManyToOne()
 	@JoinColumn(name = FACHLEHRER_ZWEI_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
 	private LehrerPojo fachlehrerZwei = null;
+	@ManyToOne()
+	@JoinColumn(name = FACHLEHRER_DREI_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
+	private LehrerPojo fachlehrerDrei = null;
 
 	public FachPojo() {
 		
@@ -66,24 +67,17 @@ public class FachPojo implements FossaPojo, Serializable {
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getFachbezeichnung() {
-		return fachbezeichnung;
-	}
-	
-	public void setFachbezeichnung(String fachbezeichnung) {
-		this.fachbezeichnung = fachbezeichnung;
-	}
-	
-	public FachtypPojo getFachtyp() {
-		return fachtyp;
+
+	public FachdefinitionPojo getFachdefinition() {
+		return fachdefinition;
 	}
 
-	public void setFachtyp(FachtypPojo fachtyp) {
-		this.fachtyp = fachtyp;
+	public void setFachdefinition(FachdefinitionPojo fachdefinition) {
+		this.fachdefinition = fachdefinition;
 	}
 
 	public LehrerPojo getFachlehrerEins() {
@@ -93,7 +87,7 @@ public class FachPojo implements FossaPojo, Serializable {
 	public void setFachlehrerEins(LehrerPojo fachlehrerEins) {
 		this.fachlehrerEins = fachlehrerEins;
 	}
-	
+
 	public LehrerPojo getFachlehrerZwei() {
 		return fachlehrerZwei;
 	}
@@ -101,4 +95,13 @@ public class FachPojo implements FossaPojo, Serializable {
 	public void setFachlehrerZwei(LehrerPojo fachlehrerZwei) {
 		this.fachlehrerZwei = fachlehrerZwei;
 	}
+
+	public LehrerPojo getFachlehrerDrei() {
+		return fachlehrerDrei;
+	}
+
+	public void setFachlehrerDrei(LehrerPojo fachlehrerDrei) {
+		this.fachlehrerDrei = fachlehrerDrei;
+	}
+
 }

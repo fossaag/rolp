@@ -25,10 +25,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.fossa.rolp.data.einschaetzung.EinschaetzungPojo;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.data.FossaPojo;
 
@@ -41,6 +43,7 @@ public class KlassePojo implements FossaPojo, Serializable {
 	public static final String ID_COLUMN = "id";
 	public static final String KLASSENNAME_COLUMN = "klassenname";
 	public static final String KLASSENLEHRER_COLUMN = "klassenlehrer";
+	public static final String KLASSENTYP_COLUMN = "klassentyp";
 	public static final String KLASSENEINSCHAETZUNG_COLUMN = "klasseneinschaetzung";
 	public static final String SCHUELER_COLUMN = "schueler";
 	
@@ -54,6 +57,9 @@ public class KlassePojo implements FossaPojo, Serializable {
 	@OneToOne()
 	@JoinColumn(name = KLASSENLEHRER_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
 	private LehrerPojo klassenlehrer = null;
+	@ManyToOne
+	@JoinColumn(name = KLASSENTYP_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
+	private KlassentypPojo klassentyp;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = KLASSENEINSCHAETZUNG_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
 	private EinschaetzungPojo klasseneinschaetzung = null;
@@ -85,6 +91,14 @@ public class KlassePojo implements FossaPojo, Serializable {
 
 	public void setKlassenlehrer(LehrerPojo klassenlehrer) {
 		this.klassenlehrer = klassenlehrer;
+	}
+	
+	public KlassentypPojo getKlassentyp() {
+		return klassentyp;
+	}
+
+	public void setKlassentyp(KlassentypPojo klassentyp) {
+		this.klassentyp = klassentyp;
 	}
 
 	public EinschaetzungPojo getKlasseneinschaetzung() {

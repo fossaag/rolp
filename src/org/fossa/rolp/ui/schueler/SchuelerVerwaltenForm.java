@@ -21,6 +21,7 @@ import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojo;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
@@ -34,13 +35,13 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button.ClickListener;
 
-public class SchuelerAnlegenForm extends FossaForm implements ClickListener {
+public class SchuelerVerwaltenForm extends FossaForm implements ClickListener {
 
 	private static final long serialVersionUID = 3788562470960128102L;
 
-	public SchuelerAnlegenForm() {
+	public SchuelerVerwaltenForm() {
 		super();
-		setFormFieldFactory(new SchuelerFormFields());
+		setFormFieldFactory(new SchuelerVerwaltenFormFields());
 	}
 	
 	@Override
@@ -63,8 +64,14 @@ public class SchuelerAnlegenForm extends FossaForm implements ClickListener {
 				zuordnungFS.setFach(fach.getPojo());
 				ZuordnungFachSchuelerContainer.getInstance().addBean(zuordnungFS);
 			}
-			int nextKlasse = KlassenstufenUtils.getKlassenstufe(schueler.getKlasse().getKlassenname()) + 1;
-			schueler.setVersetzungsvermerk("wird versetzt nach Klasse " + nextKlasse + ".");
+			
+			KlassentypPojo klassentyp = klasse.getPojo().getKlassentyp();
+			if (klassentyp.isKlassenstufenorientiert()){
+				int nextKlasse = KlassenstufenUtils.getKlassenstufe(schueler.getKlasse().getKlassenname()) + 1;
+				schueler.setVersetzungsvermerk("wird versetzt nach Klasse " + nextKlasse + ".");
+			} else {
+				schueler.setVersetzungsvermerk("wird versetzt.");
+			}
 			
 		}
 		closeWindow();

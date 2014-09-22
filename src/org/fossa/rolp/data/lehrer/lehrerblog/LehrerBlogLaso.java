@@ -15,11 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data.lehrer;
+package org.fossa.rolp.data.lehrer.lehrerblog;
 
 import java.util.Date;
 import java.util.List;
 
+import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.rolp.util.DateUtil;
 import org.fossa.vaadin.laso.FossaLaso;
 

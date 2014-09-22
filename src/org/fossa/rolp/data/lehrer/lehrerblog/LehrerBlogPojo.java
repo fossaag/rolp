@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data.lehrer;
+package org.fossa.rolp.data.lehrer.lehrerblog;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.data.FossaPojo;
 
 @Entity

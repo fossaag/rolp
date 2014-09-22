@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungPojo;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
+import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
 import org.fossa.rolp.data.schueler.SchuelerPojo;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerLaso;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerPojo;
@@ -21,6 +23,7 @@ public class ZuordnungFachSchuelerLasoTest {
 	private SchuelerPojo schueler;
 	private FachPojo fach;
 	private EinschaetzungLaso facheinschaetzung;
+	private FachdefinitionPojo fachdefinition;
 
 	class TestZuordnungFachSchuelerLaso extends ZuordnungFachSchuelerLaso {		
 		private static final long serialVersionUID = -1567424097746854259L;
@@ -53,7 +56,10 @@ public class ZuordnungFachSchuelerLasoTest {
 		id = 81L;
 		fach = new FachPojo();
 		fach.setId(12L);
-		fach.setFachbezeichnung("Madde");
+		fachdefinition = new FachdefinitionPojo();
+		fachdefinition.setId(234L);
+		fachdefinition.setFachbezeichnung("Madde");
+		fach.setFachdefinition(fachdefinition);
 		schueler = new SchuelerPojo();
 		schueler.setVorname("Chris");
 		schueler.setName("Debirg");
@@ -172,9 +178,39 @@ public class ZuordnungFachSchuelerLasoTest {
 	public void testGetFachbezeichnung() {
 		assertTrue(zuordnungFachSchuelerLaso.getFachbezeichnung().equals(""));
 		assertFalse(triedToWrite);
+		fach = new FachPojo();
+		fach.setId(12L);
+		zuordnungFachSchuelerLaso.setFach(fach);
+		assertTrue(zuordnungFachSchuelerLaso.getFachbezeichnung().equals(""));
+		fachdefinition = new FachdefinitionPojo();
+		fachdefinition.setId(234L);
+		fachdefinition.setFachbezeichnung("Madde");
+		fach.setFachdefinition(fachdefinition);
 		zuordnungFachSchuelerLaso.setFach(fach);
 		assertTrue(triedToWrite);
-		assertTrue(zuordnungFachSchuelerLaso.getFachbezeichnung().equals(fach.getFachbezeichnung()));
+		assertTrue(zuordnungFachSchuelerLaso.getFachbezeichnung().equals(fach.getFachdefinition().getFachbezeichnung()));
+	}
+	
+	@Test	
+	public void testGetFachtypString() {
+		assertTrue(zuordnungFachSchuelerLaso.getFachtypString().equals(""));
+		assertFalse(triedToWrite);
+		fach = new FachPojo();
+		fach.setId(12L);
+		zuordnungFachSchuelerLaso.setFach(fach);
+		assertTrue(zuordnungFachSchuelerLaso.getFachtypString().equals(""));
+		fachdefinition = new FachdefinitionPojo();
+		fachdefinition.setId(234L);
+		fach.setFachdefinition(fachdefinition);
+		zuordnungFachSchuelerLaso.setFach(fach);
+		assertTrue(zuordnungFachSchuelerLaso.getFachtypString().equals(""));
+		FachtypPojo fachtyp = new FachtypPojo();
+		fachtyp.setId(234L);
+		fachtyp.setFachtyp("Fach");
+		fachdefinition.setFachtyp(fachtyp);
+		zuordnungFachSchuelerLaso.setFach(fach);
+		assertTrue(triedToWrite);
+		assertTrue(zuordnungFachSchuelerLaso.getFachtypString().equals(fachtyp.getFachtyp()));
 	}
 
 }

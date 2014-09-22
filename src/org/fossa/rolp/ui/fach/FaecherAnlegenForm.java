@@ -24,12 +24,13 @@ import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
-import org.fossa.rolp.data.lehrer.LehrerBlogContainer;
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogContainer;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
@@ -67,16 +68,13 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 	public void saveFossaForm() throws FossaFormInvalidException {
 		boolean neuesFach = (fossaLaso.getId() == null);
 		FachLaso fach = (FachLaso) fossaLaso;
-		String fachbezeichnung = (String) getField(FachPojo.FACHBEZEICHNUNG_COLUMN).getValue();
-		if(fachbezeichnung == ""){
-			throw new FossaFormInvalidException();
-		}
+		FachdefinitionPojo fachdefinition = (FachdefinitionPojo) getField(FachPojo.FACHDEFINITION_COLUMN).getValue();
 		KlasseLaso klasse = KlasseContainer.getKlasseByLehrer(((RolpApplication) getApplication()).getLoginLehrer());
 		ArrayList<FachLaso> relevanteFaecher = new ArrayList<FachLaso>();
 		relevanteFaecher.addAll(ZuordnungFachSchuelerContainer.getAllPflichtfaecherOfKlasse(klasse.getPojo()).getItemIds());
 		relevanteFaecher.addAll(FachContainer.getAllKurse().getItemIds());
 		for (FachLaso aFach : relevanteFaecher) {
-			if (aFach.getFachbezeichnung().equals(fachbezeichnung)) {
+			if (aFach.getFachdefinition().getId().equals(fachdefinition.getId())) {
 				if (neuesFach || (!neuesFach && !fach.getId().equals(aFach.getId()))) {
 					throw new FossaFormInvalidException("Das Fach ist bereits vorhanden.");
 				}
@@ -84,6 +82,7 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 		}
 		LehrerPojo exFachlehrer1 = fach.getFachlehrerEins();
 		LehrerPojo exFachlehrer2 = fach.getFachlehrerZwei();
+		LehrerPojo exFachlehrer3 = fach.getFachlehrerDrei();
 		super.saveFossaForm();
 		LehrerBlogContainer lehrerBlogContainer = LehrerBlogContainer.getInstance();
 		fach = (FachLaso) fossaLaso;
@@ -92,7 +91,6 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 			klassenSuffix = klassenSuffix + "' der Klasse '" + klasse.getKlassenname();
 		}
 		if (neuesFach) {
-			fach.setFachtyp(fachtyp);
 			if (fachtyp.isPflichtfach()) {
 				BeanItemContainer<SchuelerLaso> schuelerOfKlasse = SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo());
 				for (SchuelerLaso schueler : schuelerOfKlasse.getItemIds()) {
@@ -114,6 +112,14 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 			if (fachlehrer2 != null) {
 				LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
 				lehrerblog.setLehrer(fachlehrer2);
+				lehrerblog.setTimestamp(new Date());
+				lehrerblog.setEreignis("Fach '" + fach.getFachbezeichnung() + klassenSuffix + "' wurde hinzugefügt.");	
+				lehrerBlogContainer.addBean(lehrerblog);
+			}
+			LehrerPojo fachlehrer3 = fach.getFachlehrerDrei();
+			if (fachlehrer3 != null) {
+				LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
+				lehrerblog.setLehrer(fachlehrer3);
 				lehrerblog.setTimestamp(new Date());
 				lehrerblog.setEreignis("Fach '" + fach.getFachbezeichnung() + klassenSuffix + "' wurde hinzugefügt.");	
 				lehrerBlogContainer.addBean(lehrerblog);
@@ -145,6 +151,21 @@ public class FaecherAnlegenForm extends FossaForm implements ClickListener {
 			if (exFachlehrer2 != null && (fachlehrer2 == null || !exFachlehrer2.getId().equals(fachlehrer2.getId()))) {
 				LehrerBlogLaso exlehrerblog = new LehrerBlogLaso();
 				exlehrerblog.setLehrer(exFachlehrer2);
+				exlehrerblog.setTimestamp(new Date());
+				exlehrerblog.setEreignis("Fach '" + fach.getFachbezeichnung() + klassenSuffix + "' wird nicht mehr von Ihnen unterrichtet.");	
+				lehrerBlogContainer.addBean(exlehrerblog);
+			}
+			LehrerPojo fachlehrer3 = fach.getFachlehrerDrei();
+			if (fachlehrer3 != null && (exFachlehrer3 == null || !fachlehrer3.getId().equals(exFachlehrer3.getId()))) {
+				LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
+				lehrerblog.setLehrer(fachlehrer3);
+				lehrerblog.setTimestamp(new Date());
+				lehrerblog.setEreignis("Fach '" + fach.getFachbezeichnung() + klassenSuffix + "' wird nun von Ihnen unterrichtet.");
+				lehrerBlogContainer.addBean(lehrerblog);
+			}					
+			if (exFachlehrer3 != null && (fachlehrer3 == null || !exFachlehrer3.getId().equals(fachlehrer3.getId()))) {
+				LehrerBlogLaso exlehrerblog = new LehrerBlogLaso();
+				exlehrerblog.setLehrer(exFachlehrer3);
 				exlehrerblog.setTimestamp(new Date());
 				exlehrerblog.setEreignis("Fach '" + fach.getFachbezeichnung() + klassenSuffix + "' wird nicht mehr von Ihnen unterrichtet.");	
 				lehrerBlogContainer.addBean(exlehrerblog);

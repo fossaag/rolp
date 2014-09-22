@@ -8,14 +8,18 @@ import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
 import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionContainer;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionLaso;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
+import org.fossa.rolp.data.fach.fachdefinition.leb.FachbezeichnungLebContainer;
+import org.fossa.rolp.data.fach.fachdefinition.leb.FachbezeichnungLebLaso;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojoContainer;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojo;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojoContainer;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojoContainer;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojoContainer;
 import org.fossa.rolp.data.leb.LebSettingsContainer;
 import org.fossa.rolp.data.leb.LebSettingsLaso;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojoContainer;
 import org.fossa.rolp.data.lehrer.LehrerContainer;
 import org.fossa.rolp.data.lehrer.LehrerLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
@@ -36,6 +40,10 @@ public class DemoSceneBuilder {
 		"Baumann", "Hofmann", "Hoffmann", "Steinmann", "Mann", "Jäger", "Fischer", "Berger", "Weinert", "Müller", "Meier", "Schulze", "Leitner", "Meggle", "Köhler", "Pohl", "Klaus", "Kunze", "Busch", "Wiese", "Weber", "Wache", "Saal", "Seifert", "Seidel", "Schnitzel", "Tippmann", "Trautner", "Marin", "Mendel", "Mauersberger", "Mund", "Muniz", "Erdel", "Elser", "Friedrich", "Daffner", "Baum", "Förster", "Decker", "Becker", "Beck", "Tacker", "Brase"};
 	
 	public static void buildSchulleiterScene(RolpApplication app, FossaAuthorizer authorizer) {
+		initializeContainers();
+		initializeSettings();
+		initializeFachdefinitionen();
+		
 		LehrerPojo schulleiterlehrer = new LehrerPojo();
 		schulleiterlehrer.setIsAdmin(true);
 		
@@ -45,6 +53,7 @@ public class DemoSceneBuilder {
 		LehrerLaso lehrerLaso = new LehrerLaso(schulleiterlehrer);
 		FossaUserLaso fossaUserLaso = new FossaUserLaso(schulleiter);
 		fossaUserLaso.setUsername("Musterschulleiter");
+		fossaUserLaso.setLastname("Musterschulleiter");
 		lehrerLaso.setUser(fossaUserLaso);
 		LehrerContainer.getInstance().addBean(lehrerLaso);
 		
@@ -55,6 +64,7 @@ public class DemoSceneBuilder {
 	public static void buildKlassenlehrerScene(RolpApplication app, FossaAuthorizer authorizer) {
 		initializeContainers();
 		initializeSettings();
+		initializeFachdefinitionen();
 		
 		FossaUserLaso klassenlehreruser = createLehrerUser("klmustermann", getRandomVorname(), "Musterklassenlehrer");
 		FossaUserLaso fachlehreruser = createLehrerUser("flmustermann", getRandomVorname(), "Musterfachlehrer");
@@ -69,6 +79,7 @@ public class DemoSceneBuilder {
 	public static void buildFachlehrerScene(RolpApplication app, FossaAuthorizer authorizer) {
 		initializeContainers();
 		initializeSettings();
+		initializeFachdefinitionen();
 		
 		FossaUserLaso klassenlehreruser = createLehrerUser("klmustermann", getRandomVorname(), "Musterklassenlehrer");
 		FossaUserLaso fachlehreruser = createLehrerUser("flmustermann", getRandomVorname(), "Musterfachlehrer");
@@ -102,7 +113,7 @@ public class DemoSceneBuilder {
 			zuordnungFS.setSchueler(schueler.getPojo());
 			if (random(0,5)<5) {
 				EinschaetzungLaso facheinschaetzung = new EinschaetzungLaso();
-				facheinschaetzung.setEinschaetzungstext(schueler.getVorname() + ", in " + zuordnungFS.getFach().getFachbezeichnung() + " hast du großes Talent bewiesen.");
+				facheinschaetzung.setEinschaetzungstext(schueler.getVorname() + ", in " + zuordnungFS.getFach().getFachdefinition().getFachbezeichnung() + " hast du großes Talent bewiesen.");
 				facheinschaetzung.setErledigt(true);
 				zuordnungFS.setFacheinschaetzung(facheinschaetzung);
 			}
@@ -119,11 +130,10 @@ public class DemoSceneBuilder {
 	}
 
 	private static void createPflichtfaecher(FossaUserLaso klassenlehreruser, FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser, KlasseLaso klasse) {
-		for (PflichtfachtemplatesPojo pflichtfach : PflichtfachtemplatesPojoContainer.getInstance().getItemIds()) {
+		for (FachdefinitionPojo fachdefinition : FachdefinitionContainer.getAllFaecherOfFachtyp(FachdefinitionContainer.getInstance(), FachtypPojoContainer.getPflichtfach()).getItemIds()) {
 			if (random(0,3)<3) {
 				FachLaso fach = new FachLaso();
-				fach.setFachbezeichnung(pflichtfach.getPflichtfachname());
-				fach.setFachtyp(FachtypPojoContainer.getInstance().getPflichtfach());
+				fach.setFachdefinition(fachdefinition);
 				setLehrers(klassenlehreruser, fachlehreruser, andererKlassenlehreruser, fach);
 				FachContainer.getInstance().addBean(fach);
 				for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
@@ -148,6 +158,8 @@ public class DemoSceneBuilder {
 			schuelerNext.setKlasse(klasse.getPojo());
 			schuelerNext.setVorname(getRandomVorname());
 			schuelerNext.setName(getRandomNachname());
+			int nextKlasse = KlassenstufenUtils.getKlassenstufe(schuelerNext.getKlasse().getKlassenname()) + 1;
+			schuelerNext.setVersetzungsvermerk("wird versetzt nach Klasse " + nextKlasse + ".");
 			if (random(0,1) == 0) {
 				EinschaetzungLaso schuelereinschaetzung = new EinschaetzungLaso();
 				schuelereinschaetzung.setEinschaetzungstext("Du hattest ein starkes Jahr. Mach weiter so!");
@@ -165,17 +177,24 @@ public class DemoSceneBuilder {
 		do {
 			i += 1;
 			kursvorschlag = kursname + i;
-		} while (!isValidKursename(kursvorschlag));
+		} while (!isValidKursname(kursvorschlag));
 		kurs1 = new FachLaso();
-		kurs1.setFachbezeichnung(kursvorschlag);
-		kurs1.setFachtyp(FachtypPojoContainer.getInstance().getKurs());
+		FachdefinitionLaso kursvorschlagDefinition = new FachdefinitionLaso();
+		kursvorschlagDefinition.setFachtyp(FachtypPojoContainer.getKurs());
+		kursvorschlagDefinition.setFachbezeichnung(kursvorschlag);
+		FachdefinitionContainer.getInstance().addBean(kursvorschlagDefinition);
+		FachbezeichnungLebLaso kursvorschlagLebDefinition = new FachbezeichnungLebLaso();
+		kursvorschlagLebDefinition.setFachdefinition(kursvorschlagDefinition.getPojo());
+		kursvorschlagLebDefinition.setBezeichnung("Kurs");
+		FachbezeichnungLebContainer.getInstance().addBean(kursvorschlagLebDefinition);
+		kurs1.setFachdefinition(kursvorschlagDefinition.getPojo());
 		kurs1.setFachlehrerEins(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
 		FachContainer.getInstance().addBean(kurs1);
 		return kurs1;
 	}
 	
-	private static boolean isValidKursename(String kursvorschlag) {
-		for (FachLaso kurs : FachContainer.getInstance().getItemIds()) {
+	private static boolean isValidKursname(String kursvorschlag) {
+		for (FachdefinitionPojo kurs : FachdefinitionContainer.getAllFaecherOfFachtyp(FachdefinitionContainer.getInstance(), FachtypPojoContainer.getKurs()).getItemIds()) {
 			if (kursvorschlag.equals(kurs.getFachbezeichnung())) {
 				return false;
 			}
@@ -191,6 +210,7 @@ public class DemoSceneBuilder {
 		
 		klasse.setKlassenname(KlassenstufenUtils.generateKlassennameForKlassenstufe(10-((int) (Math.random() * (baseYear+9 - baseYear) + baseYear)-baseYear), KlasseContainer.getInstance()));
 		klasse.setKlassenlehrer(LehrerContainer.getLehrerByUser(fossaUserLaso).getPojo());
+		klasse.setKlassentyp(KlassentypPojoContainer.getInstance().getKlassenstufenorientiert());
 		KlasseContainer.getInstance().addBean(klasse);
 		EinschaetzungLaso klasseneinschaetzung = new EinschaetzungLaso();
 		klasseneinschaetzung.setEinschaetzungstext("Ihr ward eine großartige Klasse.");
@@ -216,7 +236,7 @@ public class DemoSceneBuilder {
 	}
 	
 	private static void setLehrers(FossaUserLaso klassenlehreruser,	FossaUserLaso fachlehreruser, FossaUserLaso andererKlassenlehreruser, FachLaso fach) {
-		int factor = random(0,5);
+		int factor = random(0,6);
 		if (factor==0) {
 			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
 		} else if (factor==1) {
@@ -232,28 +252,76 @@ public class DemoSceneBuilder {
 		} else if (factor==5) {
 			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
 			fach.setFachlehrerZwei(LehrerContainer.getLehrerByUser(andererKlassenlehreruser).getPojo());
+		} else if (factor==6) {
+			fach.setFachlehrerEins(LehrerContainer.getLehrerByUser(klassenlehreruser).getPojo());
+			fach.setFachlehrerZwei(LehrerContainer.getLehrerByUser(fachlehreruser).getPojo());
+			fach.setFachlehrerDrei(LehrerContainer.getLehrerByUser(andererKlassenlehreruser).getPojo());
 		}
 	}
-
-	private static void initializeSettings() {
-		LebSettingsLaso lebSettings = LebSettingsContainer.getLebSettings();
-		if (lebSettings.getId() == null) {
-			lebSettings = new LebSettingsLaso();
-		}
-		lebSettings.setAnzahlErsteKlassen(2);
-		lebSettings.setHalbjahr(HalbjahrPojoContainer.getInstance().firstItemId());
-		lebSettings.setLetzteKlassenstufe(8);
-		lebSettings.setZeugnisausgabedatum(new Date());
-		LebSettingsContainer.getInstance().addItem(lebSettings);
-	}
-
+	
 	private static void initializeContainers() {
 		FachContainer.getInstance();
 		KlasseContainer.getInstance();
 		LehrerContainer.getInstance();
 		SchuelerContainer.getInstance();
 		ZuordnungFachSchuelerContainer.getInstance();
+		FachdefinitionContainer.getInstance();
+		FachbezeichnungLebContainer.getInstance();
 	}
+	
+	private static void initializeSettings() {
+		LebSettingsLaso lebSettings = LebSettingsContainer.getLebSettings();
+		if (lebSettings.getId() == null) {
+			lebSettings = new LebSettingsLaso();
+		}
+		lebSettings.setAnzahlErsteKlassen(2);
+		lebSettings.setHalbjahr(HalbjahrPojoContainer.getInstance().lastItemId());
+		lebSettings.setLetzteKlassenstufe(8);
+		lebSettings.setZeugnisausgabedatum(new Date());
+		LebSettingsContainer.getInstance().addItem(lebSettings);
+	}
+	
+	private static void initializeFachdefinitionen() {
+		if (FachdefinitionContainer.getInstance().getItemIds().isEmpty()) {
+			FachdefinitionLaso deutschDefinition = new FachdefinitionLaso();
+			deutschDefinition.setFachtyp(FachtypPojoContainer.getPflichtfach());
+			deutschDefinition.setFachbezeichnung("Deutsch");
+			FachdefinitionContainer.getInstance().addBean(deutschDefinition);
+			FachbezeichnungLebLaso deutschLebDefinition = new FachbezeichnungLebLaso();
+			deutschLebDefinition.setFachdefinition(deutschDefinition.getPojo());
+			deutschLebDefinition.setBezeichnung("Deutschunterricht");
+			FachbezeichnungLebContainer.getInstance().addBean(deutschLebDefinition);
+			
+			FachdefinitionLaso matheDefinition = new FachdefinitionLaso();
+			matheDefinition.setFachtyp(FachtypPojoContainer.getPflichtfach());
+			matheDefinition.setFachbezeichnung("Mathematik");
+			FachdefinitionContainer.getInstance().addBean(matheDefinition);
+			FachbezeichnungLebLaso matheLebDefinition = new FachbezeichnungLebLaso();
+			matheLebDefinition.setFachdefinition(matheDefinition.getPojo());
+			matheLebDefinition.setBezeichnung("Mathe");
+			FachbezeichnungLebContainer.getInstance().addBean(matheLebDefinition);
+			FachbezeichnungLebLaso matheLebDefinition2 = new FachbezeichnungLebLaso();
+			matheLebDefinition2.setFachdefinition(matheDefinition.getPojo());
+			matheLebDefinition2.setBezeichnung("Mathematikunterricht");
+			FachbezeichnungLebContainer.getInstance().addBean(matheLebDefinition2);
+			
+			FachdefinitionLaso englischDefinition = new FachdefinitionLaso();
+			englischDefinition.setFachtyp(FachtypPojoContainer.getPflichtfach());
+			englischDefinition.setFachbezeichnung("Englisch");
+			FachdefinitionContainer.getInstance().addBean(englischDefinition);
+			FachbezeichnungLebLaso englischLebDefinition = new FachbezeichnungLebLaso();
+			englischLebDefinition.setFachdefinition(englischDefinition.getPojo());
+			englischLebDefinition.setBezeichnung("Englischunterricht");
+			FachbezeichnungLebContainer.getInstance().addBean(englischLebDefinition);
+		
+			FachdefinitionLaso geschichteDefinition = new FachdefinitionLaso();
+			geschichteDefinition.setFachtyp(FachtypPojoContainer.getPflichtfach());
+			geschichteDefinition.setFachbezeichnung("Geschichte");
+			FachdefinitionContainer.getInstance().addBean(geschichteDefinition);
+		}
+	}
+
+	
 
 	private static String getRandomNachname() {
 		int slot = random(0, lastnames.length-1);

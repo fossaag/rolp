@@ -6,6 +6,7 @@ import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojoContainer;
 import org.fossa.rolp.data.leb.LebSettingsContainer;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
@@ -19,6 +20,7 @@ import org.fossa.vaadin.auth.data.FossaUserContainer;
 import org.fossa.vaadin.auth.data.FossaUserLaso;
 import org.fossa.vaadin.laso.FossaLaso;
 
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Window.Notification;
 
 public class UpgradeUtils {
@@ -53,7 +55,7 @@ public class UpgradeUtils {
 	
 	private static void letzteKlassenLoeschen() {
 		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
-			if (KlassenstufenUtils.getKlassenstufe(klasse.getKlassenname()) == LebSettingsContainer.getLebSettings().getLetzteKlassenstufe()) {
+			if (klasse.getKlassentyp().isKlassenstufenorientiert() && KlassenstufenUtils.getKlassenstufe(klasse.getKlassenname()) == LebSettingsContainer.getLebSettings().getLetzteKlassenstufe()) {
 				for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse.getPojo()).getItemIds()) {
 					SchuelerContainer.getInstance().deleteSchueler(schueler);
 				}
@@ -64,7 +66,9 @@ public class UpgradeUtils {
 
 	private static void klassenUpgraden() {
 		for (KlasseLaso klasse : KlasseContainer.getInstance().getItemIds()) {
+			if(klasse.getKlassentyp().isKlassenstufenorientiert()){
 			klasse.setKlassenname(KlassenstufenUtils.erhoeheKlassenstufe(klasse.getKlassenname()));
+			}
 		}		
 	}
 	
@@ -72,6 +76,7 @@ public class UpgradeUtils {
 		for (int i=0; i<LebSettingsContainer.getLebSettings().getAnzahlErsteKlassen(); i++) {
 			KlasseLaso klasse = new KlasseLaso();
 			klasse.setKlassenname(KlassenstufenUtils.generateKlassennameForKlassenstufe(1, KlasseContainer.getInstance()));
+			klasse.setKlassentyp(KlassentypPojoContainer.getInstance().getKlassenstufenorientiert());
 			KlasseContainer.getInstance().addBean(klasse);
 		}
 	}
@@ -101,7 +106,9 @@ public class UpgradeUtils {
 	}
 	
 	private static void faecherLoeschen(AdminDashboard adminDashboard) throws Exception {
-		for (FachLaso fach : FachContainer.getInstance().getItemIds()) {
+		BeanItemContainer<FachLaso> faecher = new BeanItemContainer<FachLaso>(FachLaso.class);
+		faecher.addAll(FachContainer.getInstance().getItemIds());
+		for (FachLaso fach : faecher.getItemIds()) {
 			for (SchuelerPojo schueler: ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach.getPojo()).getItemIds()) {
 				new ZuordnungFachSchuelerHandler(schueler, fach.getPojo(), true, adminDashboard).setZugeordnet(false);
 			}

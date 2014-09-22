@@ -27,6 +27,8 @@ import org.fossa.rolp.ui.dashboard.FachlehrerDashboard;
 import org.fossa.rolp.ui.dashboard.KlassenlehrerDashboard;
 import org.fossa.rolp.ui.fach.KurseZuordnen;
 import org.fossa.rolp.ui.fach.PflichtfaecherlisteAnzeigen;
+import org.fossa.rolp.ui.fach.fachdefinition.FachdefinitionlisteAnzeigen;
+import org.fossa.rolp.ui.fach.fachdefinition.leb.FachbezeichnungenLeblisteAnzeigen;
 import org.fossa.rolp.ui.klasse.klasseanlegen.KlassenlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.SchuelerlisteAnzeigen;
 import org.fossa.rolp.ui.schueler.versetzungsvermerk.VersetzungsvermerklisteAnzeigen;
@@ -206,6 +208,10 @@ public class RolpApplication extends FossaApplication implements Button.ClickLis
 					((KlassenlehrerDashboard) window).refreshPage();
 				} else if (window instanceof FachlehrerDashboard) {
 					((FachlehrerDashboard) window).refreshPage();
+				} else if (window instanceof FachdefinitionlisteAnzeigen) {
+					((FachdefinitionlisteAnzeigen) window).refreshPage();
+				} else if (window instanceof FachbezeichnungenLeblisteAnzeigen) {
+					((FachbezeichnungenLeblisteAnzeigen) window).refreshPage();
 				} else if (window instanceof KlassenlisteAnzeigen) {
 					((KlassenlisteAnzeigen) window).refreshPage();
 				}

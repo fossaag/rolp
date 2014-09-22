@@ -30,14 +30,17 @@ public class KlasseContainer extends BeanItemContainer<KlasseLaso> implements Se
 
 	public static final String[] NATURAL_FORM_ORDER = new String[] {
 		KlassePojo.KLASSENNAME_COLUMN,
+		KlassePojo.KLASSENTYP_COLUMN,
 	};
 	
 	public static final String[] NATURAL_COL_ORDER = new String[] {
 		KlassePojo.KLASSENNAME_COLUMN,
+		KlasseLaso.KLASSENTYP_COLUMN,
 	};
 	
 	public static final String[] COL_HEADERS = new String[] {
 		KlassePojo.KLASSENNAME_COLUMN,
+		KlassePojo.KLASSENTYP_COLUMN,
 	};
 	
 	public static final Object[] KLASSENLEHRER_ORDER = new Object[] {

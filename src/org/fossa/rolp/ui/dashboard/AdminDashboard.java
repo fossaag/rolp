@@ -31,6 +31,7 @@ import org.fossa.rolp.data.lehrer.LehrerContainer;
 import org.fossa.rolp.data.lehrer.LehrerLaso;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
+import org.fossa.rolp.ui.fach.fachdefinition.FachdefinitionlisteAnzeigen;
 import org.fossa.rolp.ui.klasse.KlassenlehrerZuordnen;
 import org.fossa.rolp.ui.klasse.klasseanlegen.KlassenlisteAnzeigen;
 import org.fossa.rolp.ui.leb.LebSettingsAnlegen;
@@ -70,6 +71,7 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 	private Button klassenlehrerZuweisenButton = new Button("Klassenlehrer zuweisen", (ClickListener) this);
 	private Button klasseVerwaltenButton = new Button("Klassen verwalten", (ClickListener) this);
 	private Button lebSettingsButton = new Button("Einstellungen", (ClickListener) this);
+	private Button faecherDefinierenButton = new Button("Fächer definieren", (ClickListener) this);
 	private Button lebArchivierungButton = new Button("LEB-Archivierung", (ClickListener) this);
 	private Button upgradeButton = new Button("Systemupgrade", (ClickListener) this);	
 	private CustomLayout horizontalButtonBattery = new CustomLayout("./applicationMainLayout/adminHorizontalButtonBattery");
@@ -101,6 +103,7 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		lebArchivierungButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		klassenlehrerZuweisenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		klasseVerwaltenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
+		faecherDefinierenButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		upgradeButton.setWidth(95, Sizeable.UNITS_PERCENTAGE);
 		upgradeButton.setEnabled(
 				LebSettingsContainer.getLebSettings().getZeugnisausgabedatum() != null
@@ -115,6 +118,7 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		
 		verticalButtonBattery.removeAllComponents();
 		verticalButtonBattery.addComponent(lebSettingsButton, "lebSettingsButton");
+		verticalButtonBattery.addComponent(faecherDefinierenButton, "faecherDefinierenButton");
 		verticalButtonBattery.addComponent(lebArchivierungButton, "zipDownloadButton");
 		verticalButtonBattery.addComponent(upgradeButton, "upgradeButton");		
 	}
@@ -142,6 +146,8 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 			getKlassenlisteAnzeigen();
 		} else if (source == lebSettingsButton) {
 			openSubwindow(getLebSettingsAnlegen(LebSettingsContainer.getLebSettings()));
+		} else if (source == faecherDefinierenButton) {
+			openSubwindow(getFachdefinitionenlisteAnzeigen());
 		} else if (source == upgradeButton) {
 			confirmUpgrade = new FossaBooleanDialog(app, " - Bestätigung - ", "Wenn Sie das Systemupgrade durchführen, werden alle Zuordnungen, alle Fächer bzw. Kurse und alle Bestandteile der LEBs dauerhaft entfernt. Möchten Sie das Upgrade dennoch durchführen?", "Ja", "Nein");
 			confirmUpgrade.addListener((CloseListener) this); 
@@ -186,6 +192,10 @@ public class AdminDashboard extends CustomLayout implements Button.ClickListener
 		}
 	}
 	
+	private FachdefinitionlisteAnzeigen getFachdefinitionenlisteAnzeigen() {
+		return new FachdefinitionlisteAnzeigen(app);
+	}
+
 	private KlassenlehrerZuordnen getKlassenlehrerZuweisen() throws FossaLasoLockedException {
 		return new KlassenlehrerZuordnen(app);
 	}

@@ -172,18 +172,18 @@ public class PdfStreamSource implements StreamSource {
 			Paragraph paragraphFacheinschaetzung = new Paragraph();
 			Section facheinschaetzungsTextSection = chapterLEB.addSection(paragraphFacheinschaetzung);
 			facheinschaetzungsTextSection.setNumberDepth(0);
-			Collection<String> suchworte = facheinschaetzungsdaten.getSuchworte();
-			suchworte.add(facheinschaetzungsdaten.getFachname());
+			Collection<String> fachbezeichnungen = facheinschaetzungsdaten.getFachbezeichnungen();
+			fachbezeichnungen.add(facheinschaetzungsdaten.getFachname());
 			
 			String facheinschaetzung = facheinschaetzungsdaten.getFacheinschaetzung();
 			
 			Integer firstIndex = null;
 			String boldedWord = "";
-			for (String suchwort : suchworte) {
-				int index = facheinschaetzung.toLowerCase().indexOf(suchwort.toLowerCase());
+			for (String fachbezeichnung : fachbezeichnungen) {
+				int index = facheinschaetzung.toLowerCase().indexOf(fachbezeichnung.toLowerCase());
 				if (index != -1 && (firstIndex == null || firstIndex > index)) {
 					firstIndex = index;
-					boldedWord = suchwort;
+					boldedWord = fachbezeichnung;
 				}
 			}
 			Paragraph facheinschaetzungParapgraph = new Paragraph();

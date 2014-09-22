@@ -60,7 +60,7 @@ public class ZuordnungFachSchuelerHandler {
 			ZuordnungFachSchuelerContainer.getInstance().addItem(zuordnungFS);
 		} else {
 			if (object instanceof Table &&
-					fach.getFachtyp().isPflichtfach() && 
+					fach.getFachdefinition().getFachtyp().isPflichtfach() && 
 					ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach).size() == 1 && 
 					ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach).firstItemId().getId().equals(schueler.getId())
 				)
@@ -72,7 +72,7 @@ public class ZuordnungFachSchuelerHandler {
 			}
 		}
 		System.out.println("ich wurde zugeordnet: " + zugeordnet);
-		System.out.println("Kurs: " + fach.getFachbezeichnung());
+		System.out.println("Kurs: " + fach.getFachdefinition().getFachbezeichnung());
 		System.out.println("Schüler: " + getSchuelername());
 	}
 }

@@ -43,8 +43,8 @@ public class FachtypPojoContainer extends BeanItemContainer<FachtypPojo> impleme
 		return fachtypContainer;
 	}
 	
-	public FachtypPojo getPflichtfach() {
-		for (FachtypPojo fachtyp: fachtypContainer.getItemIds()) {			
+	public static FachtypPojo getPflichtfach() {
+		for (FachtypPojo fachtyp: getInstance().getItemIds()) {			
 			if (fachtyp.isPflichtfach()) {
 				return fachtyp;
 			}
@@ -52,8 +52,8 @@ public class FachtypPojoContainer extends BeanItemContainer<FachtypPojo> impleme
 		return null;
 	}
 
-	public FachtypPojo getKurs() {
-		for (FachtypPojo fachtyp: fachtypContainer.getItemIds()) {			
+	public static FachtypPojo getKurs() {
+		for (FachtypPojo fachtyp: getInstance().getItemIds()) {			
 			if (fachtyp.isKurs()) {
 				return fachtyp;
 			}

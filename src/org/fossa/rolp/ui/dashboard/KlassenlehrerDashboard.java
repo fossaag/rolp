@@ -72,6 +72,7 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 	private Button windowCloseButton = new Button ("Fenster schlieﬂen", (ClickListener) this);
 	private Button versetzungsvermerkButton = new Button ("Versetzungsvermerke", (ClickListener) this);
 	private TextField klasseLabel;
+	private TextField klassenTypLabel;
 	private TextField zeugnisausgabeLabel;
 	private TextField halbjahrLabel;
 	private Label hinweistext;
@@ -224,6 +225,10 @@ public class KlassenlehrerDashboard extends FossaWindow implements Button.ClickL
 		klasseLabel.setReadOnly(true);
 		klasseLabel.addStyleName("klasseLabel");
 		headdataEditingPanel.addComponent(klasseLabel,"klasseLabel");
+		
+		klassenTypLabel = new TextField("Klassentyp: " + klasse.getKlassentypString());
+		klassenTypLabel.setReadOnly(true);
+		headdataEditingPanel.addComponent(klassenTypLabel,"klassenTypLabel");
 
 		zeugnisausgabeLabel = new TextField("Zeugnisausgabe am " + LebSettingsContainer.getLebSettings().getZeugnisausgabedatumString());
 		zeugnisausgabeLabel.setReadOnly(true);

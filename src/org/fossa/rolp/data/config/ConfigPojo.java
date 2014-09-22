@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data;
+package org.fossa.rolp.data.config;
 
 import java.io.Serializable;
 

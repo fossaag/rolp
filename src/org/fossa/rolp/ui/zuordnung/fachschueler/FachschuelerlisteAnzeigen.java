@@ -19,7 +19,7 @@ package org.fossa.rolp.ui.zuordnung.fachschueler;
 
 import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
-import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerLaso;
 import org.fossa.rolp.ui.einschaetzung.EinschaetzungAnlegen;
@@ -46,13 +46,18 @@ public class FachschuelerlisteAnzeigen extends FossaWindow implements ClickListe
 	private Button windowCloseButton = new Button("Schließen", (Button.ClickListener) this);
 
 	private EinschaetzungAnlegen einschaetzungAnlegen;
-	private FachPojo fach;
+	private FachLaso fach;
 
-	public FachschuelerlisteAnzeigen(RolpApplication app, FachPojo fach, FachschuelerList fachschuelerListe) {
+	public FachschuelerlisteAnzeigen(RolpApplication app, FachLaso fach, FachschuelerList fachschuelerListe) {
 		super(app);
 		this.app = app;
 		this.fach = fach;
 		this.fachschuelerList = fachschuelerListe;
+		if (fach.getKlasse().equals(" - ")) {
+			setCaption("Facheinschätzungen für das Fach " + fach.getFachdefinition().getFachbezeichnung());
+		} else {
+			setCaption("Facheinschätzungen für das Fach " + fach.getFachdefinition().getFachbezeichnung() + " in Klasse " + fach.getKlasse());
+		}
 		setWidth("550px");
 		
 		VerticalLayout layoutVertical = new VerticalLayout();
@@ -97,7 +102,7 @@ public class FachschuelerlisteAnzeigen extends FossaWindow implements ClickListe
 				app.getMainWindow().showNotification("kein Schüler ausgewählt");
 				return;
 			}
-			facheinschaetzungBearbeiten(ZuordnungFachSchuelerContainer.getZuordnung(zuordnungFS.getSchueler(), fach));
+			facheinschaetzungBearbeiten(ZuordnungFachSchuelerContainer.getZuordnung(zuordnungFS.getSchueler(), fach.getPojo()));
 		}
 	}
 
@@ -125,7 +130,7 @@ public class FachschuelerlisteAnzeigen extends FossaWindow implements ClickListe
 		Property property = (Property) event.getSource();
 		if (property == fachschuelerList && event.isDoubleClick()) {
 			ZuordnungFachSchuelerLaso zuordnungFS = (ZuordnungFachSchuelerLaso) event.getItemId();
-			facheinschaetzungBearbeiten(ZuordnungFachSchuelerContainer.getZuordnung(zuordnungFS.getSchueler(), fach));
+			facheinschaetzungBearbeiten(ZuordnungFachSchuelerContainer.getZuordnung(zuordnungFS.getSchueler(), fach.getPojo()));
 		}
 	}
 

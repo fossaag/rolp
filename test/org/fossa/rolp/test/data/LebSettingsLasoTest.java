@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojo;
 import org.fossa.rolp.data.leb.LebSettingsLaso;
 import org.fossa.rolp.data.leb.LebSettingsPojo;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojo;
 import org.fossa.rolp.util.DateUtil;
 import org.fossa.vaadin.test.testutils.LasoTestUtils;
 import org.junit.After;

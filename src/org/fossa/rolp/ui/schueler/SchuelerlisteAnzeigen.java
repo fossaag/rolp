@@ -24,9 +24,9 @@ import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
 import org.fossa.rolp.data.klasse.KlasseContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
-import org.fossa.rolp.data.lehrer.LehrerBlogContainer;
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogContainer;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
@@ -57,7 +57,7 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 	private Button schuelerBearbeitenButton = new Button("Bearbeiten", (ClickListener) this);
 	private RolpApplication app;
 	private SchuelerList schuelerList = null;
-	private SchuelerAnlegen schuelerAnlegen;
+	private SchuelerVerwalten schuelerAnlegen;
 	private KlasseLaso klasseLaso;
 
 	private FossaBooleanDialog confirmDeleteSchueler;
@@ -126,9 +126,9 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 					return;
 				}
 				for (FachPojo fach : ZuordnungFachSchuelerContainer.getAllFaecherOfSchueler(schueler.getPojo()).getItemIds()) {
-					if (fach.getFachtyp().isPflichtfach()) {
+					if (fach.getFachdefinition().getFachtyp().isPflichtfach()) {
 						if (ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(fach).size() == 1) {
-							getWindow().showNotification(schueler.getVorname() + " ist der letzte Schüler im Fach '" + fach.getFachbezeichnung() + "' und kann daher nicht gelöscht werden.");
+							getWindow().showNotification(schueler.getVorname() + " ist der letzte Schüler im Fach '" + fach.getFachdefinition().getFachbezeichnung() + "' und kann daher nicht gelöscht werden.");
 							return;
 						}
 					}
@@ -159,11 +159,11 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 		return false;
 	}
 
-	private SchuelerAnlegen getSchuelerAnlegen(SchuelerLaso schueler) {
+	private SchuelerVerwalten getSchuelerAnlegen(SchuelerLaso schueler) {
 		if (schueler == null) {
 			schueler = new SchuelerLaso(klasseLaso.getPojo());	
 		}
-		schuelerAnlegen = new SchuelerAnlegen(app, schueler);
+		schuelerAnlegen = new SchuelerVerwalten(app, schueler);
 		return schuelerAnlegen;
 	}
 	
@@ -229,7 +229,7 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 						LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
 						lehrerblog.setLehrer(fachlehrer1);
 						lehrerblog.setTimestamp(new Date());
-						lehrerblog.setEreignis("Der von Ihnen unterrichtete Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' im Fach '" + fach.getFachbezeichnung() + "' wurde gelöscht.");
+						lehrerblog.setEreignis("Der von Ihnen unterrichtete Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' im Fach '" + fach.getFachdefinition().getFachbezeichnung() + "' wurde gelöscht.");
 						lehrerBlogContainer.addBean(lehrerblog);
 					}
 					LehrerPojo fachlehrer2 = fach.getFachlehrerZwei();
@@ -237,7 +237,15 @@ public class SchuelerlisteAnzeigen extends FossaWindow implements Button.ClickLi
 						LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
 						lehrerblog.setLehrer(fachlehrer2);
 						lehrerblog.setTimestamp(new Date());
-						lehrerblog.setEreignis("Der von Ihnen unterrichtete Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' im Fach '" + fach.getFachbezeichnung() + "' wurde gelöscht.");
+						lehrerblog.setEreignis("Der von Ihnen unterrichtete Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' im Fach '" + fach.getFachdefinition().getFachbezeichnung() + "' wurde gelöscht.");
+						lehrerBlogContainer.addBean(lehrerblog);
+					}
+					LehrerPojo fachlehrer3 = fach.getFachlehrerDrei();
+					if (fachlehrer3 != null) {
+						LehrerBlogLaso lehrerblog = new LehrerBlogLaso();
+						lehrerblog.setLehrer(fachlehrer3);
+						lehrerblog.setTimestamp(new Date());
+						lehrerblog.setEreignis("Der von Ihnen unterrichtete Schüler '" + schueler.getVorname() + " " + schueler.getName() + "' im Fach '" + fach.getFachdefinition().getFachbezeichnung() + "' wurde gelöscht.");
 						lehrerBlogContainer.addBean(lehrerblog);
 					}
 				}

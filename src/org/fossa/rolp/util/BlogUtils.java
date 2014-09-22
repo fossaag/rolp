@@ -17,7 +17,7 @@
 
 package org.fossa.rolp.util;
 
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
 
 
 public class BlogUtils {

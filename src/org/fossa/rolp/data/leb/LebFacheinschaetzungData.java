@@ -24,7 +24,7 @@ public class LebFacheinschaetzungData {
 
 	private String fachname = "";
 	private String facheinschaetzung = "";
-	private Collection<String> suchworte = new ArrayList<String>();
+	private Collection<String> fachbezeichnungen = new ArrayList<String>();
 	private String unterschrift = "";
 	
 	public String getFachname() {
@@ -43,12 +43,12 @@ public class LebFacheinschaetzungData {
 		this.facheinschaetzung = facheinschaetzung;
 	}
 	
-	public Collection<String> getSuchworte() {
-		return suchworte;
+	public Collection<String> getFachbezeichnungen() {
+		return fachbezeichnungen;
 	}
 	
-	public void setSuchworte(Collection<String> suchworte) {
-		this.suchworte = suchworte;
+	public void setFachbezeichnungen(Collection<String> fachbezeichnungen) {
+		this.fachbezeichnungen = fachbezeichnungen;
 	}
 
 	public String getUnterschrift() {

@@ -19,9 +19,9 @@ package org.fossa.rolp.ui.fach;
 
 import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionContainer;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojo;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojoContainer;
 import org.fossa.rolp.data.lehrer.LehrerContainer;
 import org.fossa.rolp.data.lehrer.LehrerLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
@@ -37,6 +37,7 @@ import com.vaadin.ui.Select;
 public class FaecherAnlegenFormFields extends DefaultFieldFactory {
 
 	private static final long serialVersionUID = -7125663607032486479L;
+	
 	private FachtypPojo fachtyp;
 
 	public FaecherAnlegenFormFields(FachtypPojo fachtyp) {
@@ -47,20 +48,21 @@ public class FaecherAnlegenFormFields extends DefaultFieldFactory {
 	@Override
 	public Field createField(Item item, Object propertyId, Component uiContext) {
 		Field field = super.createField(item, propertyId, uiContext);
-		if (propertyId.equals(FachPojo.FACHBEZEICHNUNG_COLUMN)) {
-			if (fachtyp.isPflichtfach()) {
-				FossaSelect select = new FossaSelect("Fachbezeichnung: ");
-				PflichtfachtemplatesPojoContainer pflichtfach = PflichtfachtemplatesPojoContainer.getInstance();
-				select.setNullSelectionAllowed(false);
-				select.setRequired(true);
-				select.setPageLength(15);
-				for (PflichtfachtemplatesPojo pflichtfachPojo : pflichtfach.getItemIds()) {
-					select.addItem(pflichtfachPojo.getPflichtfachname());
+		if (propertyId.equals(FachPojo.FACHDEFINITION_COLUMN)) {
+			FossaSelect select = new FossaSelect("Fachdefinition: ");
+			select.setNullSelectionAllowed(false);
+			select.setRequired(true);
+			BeanItemContainer<FachdefinitionPojo> fachdefinitionenContainer = FachdefinitionContainer.getAllFaecherOfFachtyp(FachdefinitionContainer.getInstance(), fachtyp);
+			select.setContainerDataSource(fachdefinitionenContainer);
+			FachdefinitionPojo currentFachdefinition = (FachdefinitionPojo) item.getItemProperty(FachPojo.FACHDEFINITION_COLUMN).getValue();
+			select.setPropertyDataSource(item.getItemProperty(propertyId));
+			for (FachdefinitionPojo fachdefinition : fachdefinitionenContainer.getItemIds()) {
+				select.setItemCaption(fachdefinition, fachdefinition.getFachbezeichnung());
+				if (currentFachdefinition != null && fachdefinition.getId().equals(currentFachdefinition.getId())) {
+					select.select(fachdefinition);
 				}
-				return select;
-			} else {
-				field.setCaption("Fachbezeichnung: ");
 			}
+			return select;
 		} else if (propertyId.equals(FachPojo.FACHLEHRER_EINS_COLUMN)) {
 			Select select = new Select(FachContainer.FACHLEHRER_EINS_COLUMN_LABEL);
 			select.setNullSelectionAllowed(false);
@@ -92,6 +94,25 @@ public class FaecherAnlegenFormFields extends DefaultFieldFactory {
 			}
 			select.setContainerDataSource(lehrerContainer);
 			LehrerPojo currentLehrer = (LehrerPojo) item.getItemProperty(FachPojo.FACHLEHRER_ZWEI_COLUMN).getValue();
+			select.setPropertyDataSource(item.getItemProperty(propertyId));
+			for (LehrerPojo lehrer : lehrerContainer.getItemIds()) {
+				select.setItemCaption(lehrer, lehrer.getUser().getFirstname() + " " + lehrer.getUser().getLastname());
+				if (currentLehrer != null && lehrer.getId().equals(currentLehrer.getId())) {
+					select.select(lehrer);
+				}
+			}
+			return select;
+		} else if (propertyId.equals(FachPojo.FACHLEHRER_DREI_COLUMN)) {
+			Select select = new Select(FachContainer.FACHLEHRER_DREI_COLUMN_LABEL);
+			select.setNullSelectionAllowed(true);
+			BeanItemContainer<LehrerPojo> lehrerContainer = new BeanItemContainer<LehrerPojo>(LehrerPojo.class);
+			for (LehrerLaso lehrer : LehrerContainer.getInstance().getItemIds()) {
+				if (!lehrer.getPojo().getIsAdmin()) {
+					lehrerContainer.addItem(lehrer.getPojo());
+				}
+			}
+			select.setContainerDataSource(lehrerContainer);
+			LehrerPojo currentLehrer = (LehrerPojo) item.getItemProperty(FachPojo.FACHLEHRER_DREI_COLUMN).getValue();
 			select.setPropertyDataSource(item.getItemProperty(propertyId));
 			for (LehrerPojo lehrer : lehrerContainer.getItemIds()) {
 				select.setItemCaption(lehrer, lehrer.getUser().getFirstname() + " " + lehrer.getUser().getLastname());

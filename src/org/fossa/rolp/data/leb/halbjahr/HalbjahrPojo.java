@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data.fach.pflichtfach;
+package org.fossa.rolp.data.leb.halbjahr;
 
 import java.io.Serializable;
 
@@ -28,22 +28,22 @@ import javax.persistence.Table;
 import org.fossa.vaadin.data.FossaPojo;
 
 @Entity
-@Table(name = "static_pflichtfachtemplates")
-public class PflichtfachtemplatesPojo implements FossaPojo, Serializable {
+@Table(name = "static_halbjahr")
+public class HalbjahrPojo implements FossaPojo, Serializable {
 
-	private static final long serialVersionUID = 948464194160620483L;
+	private static final long serialVersionUID = -599551207080150709L;
 	
 	public static final String ID_COLUMN = "id";
-	public static final String PFLICHTFACHNAME_COLUMN = "pflichtfachname";
+	public static final String HALBJAHR_COLUMN = "halbjahr";
 
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
 	private Long id;
-	@Column(name = PFLICHTFACHNAME_COLUMN)
-	private String pflichtfachname = "";
+	@Column(name = HALBJAHR_COLUMN)
+	private String halbjahr = "";
 
-	public PflichtfachtemplatesPojo() {
+	public HalbjahrPojo() {
 
 	}
 
@@ -55,11 +55,19 @@ public class PflichtfachtemplatesPojo implements FossaPojo, Serializable {
 		this.id = id;
 	}
 
-	public String getPflichtfachname() {
-		return pflichtfachname;
+	public String getHalbjahr() {
+		return halbjahr;
 	}
 
-	public void setPflichtfachname(String pflichtfachname) {
-		this.pflichtfachname = pflichtfachname;
+	public void setHalbjahr(String halbjahr) {
+		this.halbjahr = halbjahr;
+	}
+	
+	public boolean isErstesHalbjahr() {
+		return getId() == 1;
+	}
+
+	public boolean isZweitesHalbjahr() {
+		return getId() == 2;
 	}
 }

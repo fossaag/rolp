@@ -7,7 +7,9 @@ import org.fossa.rolp.data.einschaetzung.EinschaetzungLaso;
 import org.fossa.rolp.data.einschaetzung.EinschaetzungPojo;
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.klasse.KlassePojo;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.vaadin.test.testutils.LasoTestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ public class KlasseLasoTest {
 	private long id;
 	public boolean triedToWrite = false;
 	private String klassenname;
+	private KlassentypPojo klassentyp;
 	private LehrerPojo klassenlehrer;
 	private EinschaetzungLaso klasseneinschaetzung;
 	
@@ -40,6 +43,8 @@ public class KlasseLasoTest {
 		klasseLaso = new TestKlasseLaso();
 		id = 99L;
 		klassenname = "5a";
+		klassentyp = new KlassentypPojo();
+		klassentyp.setId(11L);
 		klassenlehrer = new LehrerPojo();
 		klassenlehrer.setId(78L);
 		EinschaetzungPojo klasseneinschaetzungPojo = new EinschaetzungPojo();
@@ -64,10 +69,13 @@ public class KlasseLasoTest {
 	public void testKlasseLasoKlassePojo() {
 		KlassePojo klassePojo = new KlassePojo();
 		klassePojo.setId(id);
+		assertTrue(new TestKlasseLaso(klassePojo).getKlassentyp() == null);
+		klassePojo.setKlassentyp(klassentyp);
 		assertTrue(new TestKlasseLaso(klassePojo).getKlasseneinschaetzung() == null);
 		klassePojo.setKlasseneinschaetzung(klasseneinschaetzung.getPojo());
 		TestKlasseLaso klasseLasoTest = new TestKlasseLaso(klassePojo);
 		assertTrue(klasseLasoTest.getPojo().getId().equals(id));
+		assertTrue(klasseLasoTest.getKlassentyp().equals(klassentyp));
 		assertTrue(klasseLasoTest.getKlasseneinschaetzung().getPojo().equals(klasseneinschaetzung.getPojo()));
 		assertFalse(triedToWrite);
 	}
@@ -76,6 +84,7 @@ public class KlasseLasoTest {
 	public void testKlasseLaso() {
 		TestKlasseLaso klasseLasoTest = new TestKlasseLaso();
 		assertTrue(klasseLasoTest.getPojo() != null);
+		assertTrue(klasseLasoTest.getKlassentyp() == null);
 		assertFalse(triedToWrite);
 	}
 
@@ -93,6 +102,19 @@ public class KlasseLasoTest {
 		assertTrue(triedToWrite);
 		assertTrue(klasseLaso.getKlassenname().equals(klassenname));
 	}
+	
+	@Test
+	public void testKlassentyp() {
+		assertTrue(klasseLaso.getKlassentypString().equals(" - "));
+		assertTrue(klasseLaso.getKlassentyp() == null);
+		assertFalse(triedToWrite);
+		klasseLaso.setKlassentyp(klassentyp);
+		assertTrue(triedToWrite);
+		assertTrue(klasseLaso.getKlassentyp().equals(klassentyp));
+		assertTrue(klasseLaso.getKlassentypString().equals(klassentyp.getKlassentyp()));
+		assertTrue(LasoTestUtils.checkIfClassHasMatchingGetMethod(KlasseLaso.class, KlassentypPojo.KLASSENTYP_COLUMN));
+	}
+
 
 	@Test
 	public void testKlassenlehrer() {

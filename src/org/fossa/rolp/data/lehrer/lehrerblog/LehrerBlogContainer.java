@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data.lehrer;
+package org.fossa.rolp.data.lehrer.lehrerblog;
 
 import java.io.Serializable;
 

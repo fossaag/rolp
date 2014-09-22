@@ -20,7 +20,7 @@ package org.fossa.rolp.ui.dashboard;
 import org.fossa.rolp.RolpApplication;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.ui.fach.FaecherList;
-import org.fossa.rolp.ui.lehrer.LehrerBlog;
+import org.fossa.rolp.ui.lehrer.lehrerblog.LehrerBlog;
 import org.fossa.rolp.ui.zuordnung.fachschueler.FachschuelerList;
 import org.fossa.rolp.ui.zuordnung.fachschueler.FachschuelerlisteAnzeigen;
 import org.fossa.vaadin.ui.FossaWindow;
@@ -129,7 +129,7 @@ public class FachlehrerDashboard extends FossaWindow implements Button.ClickList
 
 	private FossaWindow buildFachschuelerlistAnzeigen(FachLaso fach) {
 		FachschuelerList fachschuelerListe = getFachschuelerList(fach);
-		fachschuelerlisteAnzeigen = new FachschuelerlisteAnzeigen(app, fach.getPojo(), fachschuelerListe);
+		fachschuelerlisteAnzeigen = new FachschuelerlisteAnzeigen(app, fach, fachschuelerListe);
 		return fachschuelerlisteAnzeigen;
 	}
 	

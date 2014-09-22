@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
-import org.fossa.rolp.data.lehrer.LehrerBlogPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogPojo;
 import org.fossa.rolp.util.DateUtil;
 import org.fossa.vaadin.auth.data.FossaUserPojo;
 import org.fossa.vaadin.test.testutils.LasoTestUtils;

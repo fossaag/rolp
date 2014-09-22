@@ -17,9 +17,9 @@
 
 package org.fossa.rolp.ui.leb;
 
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojo;
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojoContainer;
 import org.fossa.rolp.data.leb.LebSettingsPojo;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojo;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojoContainer;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Component;

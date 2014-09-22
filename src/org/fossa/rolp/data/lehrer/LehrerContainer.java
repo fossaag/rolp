@@ -45,9 +45,9 @@ public class LehrerContainer extends BeanItemContainer<LehrerLaso> implements Se
 	};
 	
 	public static final String[] COL_HEADERS = new String[] {
-		FossaUserPojo.FIRSTNAME_COLUMN,
-		FossaUserPojo.LASTNAME_COLUMN,
-		FossaUserPojo.USERNAME_COLUMN,
+		"Vorname",
+		"Name",
+		"Benutzername",
 	};
 	
 	private static LehrerContainer lehrerContainer;

@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data;
+package org.fossa.rolp.data.leb.halbjahr;
 
 
 import java.io.Serializable;
@@ -25,24 +25,23 @@ import org.fossa.vaadin.laso.FossaLaso;
 
 import com.vaadin.data.util.BeanItemContainer;
 
-public class ConfigPojoContainer extends BeanItemContainer<ConfigPojo> implements
+public class HalbjahrPojoContainer extends BeanItemContainer<HalbjahrPojo> implements
 		Serializable {
 	
-	private static final long serialVersionUID = 6897434842231328524L;
-
-	private static ConfigPojoContainer configContainer;
+	private static final long serialVersionUID = -256328031976260665L;
+	
+	private static HalbjahrPojoContainer halbjahrContainer;
 
 	@SuppressWarnings("unchecked")
-	private ConfigPojoContainer() {
-		super(ConfigPojo.class);
-		addAll((Collection<? extends ConfigPojo>) FossaLaso.getAll(ConfigPojo.class));
+	private HalbjahrPojoContainer() {
+		super(HalbjahrPojo.class);
+		addAll((Collection<? extends HalbjahrPojo>) FossaLaso.getAll(HalbjahrPojo.class));
 	}
 	
-	public static ConfigPojoContainer getInstance() {
-		if (configContainer == null) {
-			configContainer = new ConfigPojoContainer();
+	public static HalbjahrPojoContainer getInstance() {
+		if (halbjahrContainer == null) {
+			halbjahrContainer = new HalbjahrPojoContainer();
 		}
-		return configContainer;
-		
+		return halbjahrContainer;
 	}
 }

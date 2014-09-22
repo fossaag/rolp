@@ -18,11 +18,14 @@
 package org.fossa.rolp.ui.klasse.klasseanlegen;
 
 import org.fossa.rolp.data.klasse.KlassePojo;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojo;
+import org.fossa.rolp.data.klasse.klassentyp.KlassentypPojoContainer;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.Select;
 
 public class KlasseAnlegenFormFields extends DefaultFieldFactory {
 
@@ -34,6 +37,22 @@ public class KlasseAnlegenFormFields extends DefaultFieldFactory {
 		if (propertyId.equals(KlassePojo.KLASSENNAME_COLUMN)) {
 			field.setCaption("Klassenbezeichnung: ");
 			field.setRequired(true);
+		} 
+		else if (propertyId.equals(KlassePojo.KLASSENTYP_COLUMN)) {
+			Select select = new Select("Klassentyp: ");
+			KlassentypPojoContainer klassentypen = KlassentypPojoContainer.getInstance();	
+			select.setContainerDataSource(klassentypen);
+			KlassentypPojo currentKlassentyp = (KlassentypPojo) item.getItemProperty(KlassePojo.KLASSENTYP_COLUMN).getValue();
+			select.setPropertyDataSource(item.getItemProperty(propertyId));
+			for (KlassentypPojo klassentyp : klassentypen.getItemIds()) {
+				select.setItemCaption(klassentyp, klassentyp.getKlassentyp());
+				if (currentKlassentyp != null && klassentyp.getId().equals(currentKlassentyp.getId())) {
+					select.select(klassentyp);
+				}
+			}			
+			select.setNullSelectionAllowed(false);
+			select.setRequired(true);
+			return select;
 		} 
 		return field;	
 	}	

@@ -25,8 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.fossa.rolp.data.fach.FachPojo;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachsuchwortPojoContainer;
-import org.fossa.rolp.data.fach.pflichtfach.PflichtfachtemplatesPojoContainer;
+import org.fossa.rolp.data.fach.fachdefinition.leb.FachbezeichnungLebContainer;
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.leb.LebData;
 import org.fossa.rolp.data.leb.LebFacheinschaetzungData;
@@ -110,11 +109,14 @@ public class LebCreator {
 				FachPojo fach = zuordnungFS.getFach();
 				LebFacheinschaetzungData lebFacheinschaetzungData = new LebFacheinschaetzungData();
 				lebFacheinschaetzungData.setFacheinschaetzung(zuordnungFS.getFacheinschaetzung().getEinschaetzungstext());
-				lebFacheinschaetzungData.setFachname(fach.getFachbezeichnung());
-				lebFacheinschaetzungData.setSuchworte(PflichtfachsuchwortPojoContainer.getSuchworteFuerPflichtfach(PflichtfachtemplatesPojoContainer.getTemplateForFach(fach)));				
+				lebFacheinschaetzungData.setFachname(fach.getFachdefinition().getFachbezeichnung());
+				lebFacheinschaetzungData.setFachbezeichnungen(FachbezeichnungLebContainer.getFachbezeichnungenFuerFachdefinition(fach.getFachdefinition()));				
 				lebFacheinschaetzungData.setUnterschrift(fach.getFachlehrerEins().getUser().getFirstname());
 				if (fach.getFachlehrerZwei() != null) {
 					lebFacheinschaetzungData.setUnterschrift(fach.getFachlehrerEins().getUser().getFirstname() + " und " + fach.getFachlehrerZwei().getUser().getFirstname());
+				}
+				if (fach.getFachlehrerDrei() != null) {
+					lebFacheinschaetzungData.setUnterschrift(fach.getFachlehrerEins().getUser().getFirstname() + ", " + fach.getFachlehrerZwei().getUser().getFirstname() + " und " + fach.getFachlehrerDrei().getUser().getFirstname());
 				}
 				facheinschaetzungsdaten.add(lebFacheinschaetzungData);
 			}

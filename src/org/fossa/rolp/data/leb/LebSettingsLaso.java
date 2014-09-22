@@ -20,7 +20,7 @@ package org.fossa.rolp.data.leb;
 import java.util.Date;
 import java.util.List;
 
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojo;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojo;
 import org.fossa.rolp.util.DateUtil;
 import org.fossa.vaadin.laso.FossaLaso;
 

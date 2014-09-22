@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.ui.lehrer;
+package org.fossa.rolp.ui.lehrer.lehrerblog;
 
 import org.fossa.rolp.RolpApplication;
-import org.fossa.rolp.data.lehrer.LehrerBlogContainer;
-import org.fossa.rolp.data.lehrer.LehrerBlogLaso;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogContainer;
+import org.fossa.rolp.data.lehrer.lehrerblog.LehrerBlogLaso;
 import org.fossa.rolp.util.BlogUtils;
 
 import com.vaadin.ui.Label;

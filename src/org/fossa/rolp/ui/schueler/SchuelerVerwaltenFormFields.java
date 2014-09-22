@@ -15,25 +15,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.ui.fach;
+package org.fossa.rolp.ui.schueler;
 
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
-import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerHandler;
+import org.fossa.rolp.data.schueler.SchuelerPojo;
 
-import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 
-public class FachSchuelerZuordnenFieldFactory extends DefaultFieldFactory {
+public class SchuelerVerwaltenFormFields extends DefaultFieldFactory {
 
-	private static final long serialVersionUID = -7593565853397459981L;
-	
+	private static final long serialVersionUID = -7125663607032486479L;
+
 	@Override
-	public Field createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-		Field field = super.createField(container.getItem(itemId), propertyId, uiContext);
-		if (propertyId.equals(ZuordnungFachSchuelerHandler.ZUGEORDNET_COLUMN)) {
-			field.setCaption(ZuordnungFachSchuelerContainer.ZUGEORDNET_CAPTION);
+	public Field createField(Item item, Object propertyId, Component uiContext) {
+		Field field = super.createField(item, propertyId, uiContext);
+		if (propertyId.equals(SchuelerPojo.VORNAME_COLUMN)) {
+			field.setCaption("Vorname: ");
+			field.setRequired(true);
+		} else if (propertyId.equals(SchuelerPojo.NAME_COLUMN)) {
+			field.setCaption("Name: ");
+			field.setRequired(true);
+		} else if (propertyId.equals(SchuelerPojo.VERSETZUNGSVERMERK_COLUMN)) {
+			field.setCaption((String) item.getItemProperty(SchuelerPojo.VORNAME_COLUMN).getValue());
 		}
 		return field;
 	}

@@ -30,7 +30,7 @@ public class ZuordnungFachSchuelerLaso extends FossaLaso {
 
 	private static final long serialVersionUID = 2961576431099080377L;
 
-	public static final String FACHTYP_ID_COLUMN = "fachtypId";
+	public static final String FACHTYP_COLUMN = "fachtypString";
 	
 	protected ZuordnungFachSchuelerPojo zuordnungFachSchueler;
 	private EinschaetzungLaso facheinschaetzungLaso;
@@ -80,10 +80,6 @@ public class ZuordnungFachSchuelerLaso extends FossaLaso {
 		writeToDatabase();
 	}
 	
-	public Long getFachtypId() {
-		return getFach().getFachtyp().getId();
-	}
-
 	public String getName() {
 		if (getSchueler() == null) {
 			return "";
@@ -102,7 +98,23 @@ public class ZuordnungFachSchuelerLaso extends FossaLaso {
 		if (getFach() == null) {
 			return "";
 		}
-		return getFach().getFachbezeichnung();
+		if (getFach().getFachdefinition() == null) {
+			return "";
+		}
+		return getFach().getFachdefinition().getFachbezeichnung();
+	}
+	
+	public String getFachtypString() {
+		if (getFach() == null) {
+			return "";
+		}
+		if (getFach().getFachdefinition() == null) {
+			return "";
+		}
+		if (getFach().getFachdefinition().getFachtyp() == null) {
+			return "";
+		}
+		return getFach().getFachdefinition().getFachtyp().getFachtyp();
 	}
 	
 	public boolean getErledigt() {

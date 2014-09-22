@@ -24,6 +24,7 @@ import java.util.Collection;
 import org.fossa.rolp.data.fach.FachContainer;
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.klasse.KlassePojo;
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
@@ -58,7 +59,7 @@ public class ZuordnungFachSchuelerContainer extends BeanItemContainer<ZuordnungF
 	};
 	
 	public static final String[] SCHUELERFACHLIST_COL_ORDER = new String[] {
-	    FachPojo.FACHBEZEICHNUNG_COLUMN,
+	    FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		DYNAMIC_GENERATED_COLUMN_ERLEDIGT,
 	};
 	
@@ -139,7 +140,7 @@ public class ZuordnungFachSchuelerContainer extends BeanItemContainer<ZuordnungF
 			}
 		}
 		
-		zuordnungFSOfSchueler.sort(new Object[]{ZuordnungFachSchuelerLaso.FACHTYP_ID_COLUMN, FachPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {true, true});
+		zuordnungFSOfSchueler.sort(new Object[]{ZuordnungFachSchuelerLaso.FACHTYP_COLUMN, FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {false, true});
 		return zuordnungFSOfSchueler;
 	}
 
@@ -206,13 +207,13 @@ public class ZuordnungFachSchuelerContainer extends BeanItemContainer<ZuordnungF
 		}
 		for (SchuelerLaso schueler : SchuelerContainer.getAllSchuelerOfKlasse(klasse).getItemIds()) {
 			for (FachPojo fach : getAllFaecherOfSchueler(schueler.getPojo()).getItemIds()) {
-				if (fach.getFachtyp().isPflichtfach() && !ids.contains(fach.getId())) {
+				if (fach.getFachdefinition().getFachtyp().isPflichtfach() && !ids.contains(fach.getId())) {
 					pflichtfaecherOfKlasse.addBean(new FachLaso(fach));
 					ids.add(fach.getId());
 				}
 			}
 		}
-		pflichtfaecherOfKlasse.sort(new Object[] {FachPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {true});
+		pflichtfaecherOfKlasse.sort(new Object[] {FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN}, new boolean[] {true});
 		return pflichtfaecherOfKlasse;
 	}
 

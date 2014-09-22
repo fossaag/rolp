@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.fossa.rolp.data.klasse.halbjahr;
+package org.fossa.rolp.data.fach.fachdefinition;
 
 import java.io.Serializable;
 
@@ -23,27 +23,34 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
 import org.fossa.vaadin.data.FossaPojo;
 
 @Entity
-@Table(name = "static_halbjahr")
-public class HalbjahrPojo implements FossaPojo, Serializable {
+@Table(name = "dynamic_fachdefinition")
+public class FachdefinitionPojo implements FossaPojo, Serializable {
 
-	private static final long serialVersionUID = -599551207080150709L;
+	private static final long serialVersionUID = -549023713122071979L;
 	
 	public static final String ID_COLUMN = "id";
-	public static final String HALBJAHR_COLUMN = "halbjahr";
+	public static final String FACHBEZEICHNUNG_COLUMN = "fachbezeichnung";
+	public static final String FACHTYP_COLUMN = "fachtyp";
 
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
 	private Long id;
-	@Column(name = HALBJAHR_COLUMN)
-	private String halbjahr = "";
-
-	public HalbjahrPojo() {
+	@Column(name = FACHBEZEICHNUNG_COLUMN)
+	private String fachbezeichnung = "";
+	@ManyToOne
+	@JoinColumn(name = FACHTYP_COLUMN + FossaPojo.FOREIGNKEY_SUFFIX)
+	private FachtypPojo fachtyp;
+	
+	public FachdefinitionPojo() {
 
 	}
 
@@ -54,20 +61,20 @@ public class HalbjahrPojo implements FossaPojo, Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getHalbjahr() {
-		return halbjahr;
-	}
-
-	public void setHalbjahr(String halbjahr) {
-		this.halbjahr = halbjahr;
-	}
 	
-	public boolean isErstesHalbjahr() {
-		return getId() == 1;
+	public String getFachbezeichnung() {
+		return fachbezeichnung;
 	}
 
-	public boolean isZweitesHalbjahr() {
-		return getId() == 2;
+	public void setFachbezeichnung(String fachbezeichnung) {
+		this.fachbezeichnung = fachbezeichnung;
+	}
+
+	public FachtypPojo getFachtyp() {
+		return fachtyp;
+	}
+
+	public void setFachtyp(FachtypPojo fachtyp) {
+		this.fachtyp = fachtyp;
 	}
 }

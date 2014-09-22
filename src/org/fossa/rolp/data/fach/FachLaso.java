@@ -19,7 +19,7 @@ package org.fossa.rolp.data.fach;
 
 import java.util.List;
 
-import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.rolp.data.zuordnung.fachschueler.ZuordnungFachSchuelerContainer;
 import org.fossa.vaadin.laso.FossaLaso;
@@ -31,6 +31,7 @@ public class FachLaso extends FossaLaso {
 	public static final String ZUGEWIESENE_SCHUELER_COLUMN = "zugewieseneSchuelerAnzahl";
 	public static final String FACHLEHRER_EINS_COLUMN = "fachlehrerEinsString";
 	public static final String FACHLEHRER_ZWEI_COLUMN = "fachlehrerZweiString";
+	public static final String FACHLEHRER_DREI_COLUMN = "fachlehrerDreiString";
 	public static final String ERLEDIGTE_FACHEINSCHAETZUNGEN_COLUMN = "erledigteFacheinschaetzungenString";
 	public static final String KLASSE_COLUMN = "klasse";
 	
@@ -57,21 +58,12 @@ public class FachLaso extends FossaLaso {
 		writeToDatabase();
 	}
 	
-	public String getFachbezeichnung() {
-		return fach.getFachbezeichnung();
+	public FachdefinitionPojo getFachdefinition() {
+		return fach.getFachdefinition();
 	}
 
-	public void setFachbezeichnung(String fachbezeichnung) {
-		fach.setFachbezeichnung(fachbezeichnung);
-		writeToDatabase();
-	}
-	
-	public FachtypPojo getFachtyp() {
-		return fach.getFachtyp();
-	}
-
-	public void setFachtyp(FachtypPojo fachtyp) {
-		fach.setFachtyp(fachtyp);
+	public void setFachdefinition(FachdefinitionPojo fachdefinition) {
+		fach.setFachdefinition(fachdefinition);
 		writeToDatabase();
 	}
 	
@@ -97,6 +89,22 @@ public class FachLaso extends FossaLaso {
 		writeToDatabase();
 	}
 	
+	public LehrerPojo getFachlehrerDrei() {
+		return fach.getFachlehrerDrei();
+	}
+
+	public void setFachlehrerDrei(LehrerPojo fachlehrerDrei) {
+		fach.setFachlehrerDrei(fachlehrerDrei);
+		writeToDatabase();
+	}
+	
+	public String getFachbezeichnung() {
+		if (fach.getFachdefinition() == null) {
+			return " - ";
+		}
+		return fach.getFachdefinition().getFachbezeichnung();
+	}
+
 	public String getFachlehrerEinsString() {
 		if (fach.getFachlehrerEins() == null){
 			return " - ";
@@ -111,13 +119,25 @@ public class FachLaso extends FossaLaso {
 		return fach.getFachlehrerZwei().getUser().getFirstname() + " " + fach.getFachlehrerZwei().getUser().getLastname();
 	}
 	
-	public String getKlasse() {
-		if (getFachtyp().isKurs()) {
+	public String getFachlehrerDreiString() {
+		if (fach.getFachlehrerDrei() == null){
 			return " - ";
-		}		
-		return ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(getPojo()).firstItemId().getKlasse().getKlassenname();
+		}
+		return fach.getFachlehrerDrei().getUser().getFirstname() + " " + fach.getFachlehrerDrei().getUser().getLastname();
 	}
 	
+	public String getKlasse() {
+		if (getFachdefinition() == null) {
+			return " - ";
+		}
+		if (getFachdefinition().getFachtyp() == null) {
+			return " - ";
+		}
+		if (getFachdefinition().getFachtyp().isKurs()) {
+			return " - ";
+		}
+		return ZuordnungFachSchuelerContainer.getAllSchuelerOfFach(getPojo()).firstItemId().getKlasse().getKlassenname();
+	}
 	
 	public String getErledigteFacheinschaetzungenString() {
 		return ZuordnungFachSchuelerContainer.getErledigteFacheinschaetzungenString(fach);

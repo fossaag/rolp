@@ -28,7 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.fossa.rolp.data.klasse.halbjahr.HalbjahrPojo;
+import org.fossa.rolp.data.leb.halbjahr.HalbjahrPojo;
 import org.fossa.vaadin.data.FossaPojo;
 
 @Entity

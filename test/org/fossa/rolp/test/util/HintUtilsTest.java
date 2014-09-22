@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.fossa.rolp.data.fach.FachLaso;
 import org.fossa.rolp.data.fach.FachPojo;
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.fach.fachtyp.FachtypPojo;
 import org.fossa.rolp.data.klasse.KlassePojo;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
@@ -67,21 +68,28 @@ public class HintUtilsTest {
 		schueler2Pojo.setId(2L);
 		schueler2 = new SchuelerLaso(schueler2Pojo);
 		
+		FachdefinitionPojo pflichtfachdefinitionPojo = new FachdefinitionPojo();
+		pflichtfachdefinitionPojo.setId(123L);
 		FachtypPojo pflichtfachTyp = new FachtypPojo();
 		pflichtfachTyp.setId(1L);
+		pflichtfachdefinitionPojo.setFachtyp(pflichtfachTyp);
+		
 		FachPojo pflichtfach1Pojo = new FachPojo();
-		pflichtfach1Pojo.setFachtyp(pflichtfachTyp);
+		pflichtfach1Pojo.setFachdefinition(pflichtfachdefinitionPojo);
 		pflichtfach1 = new FachLaso(pflichtfach1Pojo);
 		
+		FachdefinitionPojo kursdefinitionPojo = new FachdefinitionPojo();
+		kursdefinitionPojo.setId(123L);
 		FachtypPojo kursTyp = new FachtypPojo();
 		kursTyp.setId(2L);
+		kursdefinitionPojo.setFachtyp(kursTyp);
 		
 		FachPojo kurs1Pojo = new FachPojo();
-		kurs1Pojo.setFachtyp(kursTyp);
+		kurs1Pojo.setFachdefinition(kursdefinitionPojo);
 		kurs1 = new FachLaso(kurs1Pojo);
 		
 		FachPojo kurs2Pojo = new FachPojo();
-		kurs2Pojo.setFachtyp(kursTyp);
+		kurs2Pojo.setFachdefinition(kursdefinitionPojo);
 		kurs2 = new FachLaso(kurs2Pojo);
 		
 		ZuordnungFachSchuelerPojo zuordnungFS1Pojo = new ZuordnungFachSchuelerPojo();

@@ -19,6 +19,7 @@ package org.fossa.rolp.data.fach;
 
 import java.io.Serializable;
 
+import org.fossa.rolp.data.fach.fachdefinition.FachdefinitionPojo;
 import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.laso.FossaLaso;
 
@@ -33,61 +34,70 @@ public class FachContainer extends BeanItemContainer<FachLaso> implements Serial
 	public static final String ZUGEWIESENE_SCHUELER_DER_KLASSE_COLUMN_LABEL = "davon aus der eigenen Klasse";	
 	public static final String FACHLEHRER_EINS_COLUMN_LABEL = "1. Fachlehrer";
 	public static final String FACHLEHRER_ZWEI_COLUMN_LABEL = "2. Fachlehrer";
+	public static final String FACHLEHRER_DREI_COLUMN_LABEL = "3. Fachlehrer";
 	public static final String ERLEDIGTE_FACHEINSCHAETZUNGEN_COLUMN_LABEL = "Einschätzungen erledigt";
 
 	public static final String[] NATURAL_FORM_PFLICHTFACH_ORDER = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN,
+		FachPojo.FACHDEFINITION_COLUMN,
 		FachPojo.FACHLEHRER_EINS_COLUMN,
 		FachPojo.FACHLEHRER_ZWEI_COLUMN,
+		FachPojo.FACHLEHRER_DREI_COLUMN,
 	};
 	
 	public static final String[] NATURAL_FORM_KURS_ORDER = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN, 
+		FachPojo.FACHDEFINITION_COLUMN, 
 		FachPojo.FACHLEHRER_EINS_COLUMN,
 		FachPojo.FACHLEHRER_ZWEI_COLUMN,
+		FachPojo.FACHLEHRER_DREI_COLUMN,
 	};
 	
 	public static final String[] NATURAL_PFLICHTFACH_ORDER = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN, 
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FachLaso.FACHLEHRER_EINS_COLUMN,
 		FachLaso.FACHLEHRER_ZWEI_COLUMN,
+		FachLaso.FACHLEHRER_DREI_COLUMN,
 	};
 	
 	public static final String[] PFLICHTFACH_HEADERS = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN,
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FACHLEHRER_EINS_COLUMN_LABEL,
 		FACHLEHRER_ZWEI_COLUMN_LABEL,
+		FACHLEHRER_DREI_COLUMN_LABEL,
 	};
 	
 	public static final String[] NATURAL_KURS_ORDER = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN, 
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FachLaso.FACHLEHRER_EINS_COLUMN,
 		FachLaso.FACHLEHRER_ZWEI_COLUMN,
+		FachLaso.FACHLEHRER_DREI_COLUMN,
 		FachLaso.ZUGEWIESENE_SCHUELER_COLUMN,
 		DYNAMIC_GENERATED_COLUMN_ZUGEWIESENE_SCHUELER_DER_KLASSE,
 	};
 
 	public static final String[] KURS_HEADERS = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN, 
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FACHLEHRER_EINS_COLUMN_LABEL,
 		FACHLEHRER_ZWEI_COLUMN_LABEL,
+		FACHLEHRER_DREI_COLUMN_LABEL,
 		ZUGEWIESENE_SCHUELER_COLUMN_LABEL,
 		ZUGEWIESENE_SCHUELER_DER_KLASSE_COLUMN_LABEL,
 	};
 	
 	public static final String[] NATURAL_FACH_ORDER = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN,
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FachLaso.KLASSE_COLUMN,
 		FachLaso.FACHLEHRER_EINS_COLUMN,
 		FachLaso.FACHLEHRER_ZWEI_COLUMN,
+		FachLaso.FACHLEHRER_DREI_COLUMN,
 		FachLaso.ERLEDIGTE_FACHEINSCHAETZUNGEN_COLUMN,
 	};
 
 	public static final String[] FACH_HEADERS = new String[] {
-		FachPojo.FACHBEZEICHNUNG_COLUMN, 
+		FachdefinitionPojo.FACHBEZEICHNUNG_COLUMN,
 		FachLaso.KLASSE_COLUMN,
 		FACHLEHRER_EINS_COLUMN_LABEL,
 		FACHLEHRER_ZWEI_COLUMN_LABEL,
+		FACHLEHRER_DREI_COLUMN_LABEL,
 		ERLEDIGTE_FACHEINSCHAETZUNGEN_COLUMN_LABEL,
 	};
 	
@@ -111,7 +121,7 @@ public class FachContainer extends BeanItemContainer<FachLaso> implements Serial
 	public static BeanItemContainer<FachLaso> getAllKurse() {
 		BeanItemContainer<FachLaso> kurse = new BeanItemContainer<FachLaso>(FachLaso.class);
 		for (FachLaso fach: getInstance().getItemIds()) {
-			if (fach.getFachtyp().isKurs()) {
+			if (fach.getFachdefinition() != null && fach.getFachdefinition().getFachtyp().isKurs()) {
 				kurse.addBean(fach);
 			}
 		}
@@ -121,7 +131,7 @@ public class FachContainer extends BeanItemContainer<FachLaso> implements Serial
 	public static BeanItemContainer<FachLaso> getFaecherByLehrer(LehrerPojo fachlehrer) {
 		BeanItemContainer<FachLaso> faecher = new BeanItemContainer<FachLaso>(FachLaso.class);
 		for (FachLaso fach: getInstance().getItemIds()) {
-			if (((fach.getFachlehrerEins() != null) && (fach.getFachlehrerEins()).getId().equals(fachlehrer.getId())) || ((fach.getFachlehrerZwei() != null) && (fach.getFachlehrerZwei().getId().equals(fachlehrer.getId())))) {
+			if (((fach.getFachlehrerEins() != null) && (fach.getFachlehrerEins()).getId().equals(fachlehrer.getId())) || ((fach.getFachlehrerZwei() != null) && (fach.getFachlehrerZwei().getId().equals(fachlehrer.getId())) || ((fach.getFachlehrerDrei() != null) && (fach.getFachlehrerDrei().getId().equals(fachlehrer.getId()))))) {
 				faecher.addBean(fach);
 			}
 		}		

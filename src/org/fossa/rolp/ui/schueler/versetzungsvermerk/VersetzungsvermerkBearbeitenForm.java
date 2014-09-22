@@ -19,7 +19,7 @@ package org.fossa.rolp.ui.schueler.versetzungsvermerk;
 
 import org.fossa.rolp.data.schueler.SchuelerContainer;
 import org.fossa.rolp.data.schueler.SchuelerLaso;
-import org.fossa.rolp.ui.schueler.SchuelerFormFields;
+import org.fossa.rolp.ui.schueler.SchuelerVerwaltenFormFields;
 import org.fossa.vaadin.laso.FossaLaso;
 import org.fossa.vaadin.ui.FossaForm;
 import org.fossa.vaadin.ui.exception.FossaFormInvalidException;
@@ -33,7 +33,7 @@ public class VersetzungsvermerkBearbeitenForm extends FossaForm implements Click
 
 	public VersetzungsvermerkBearbeitenForm() {
 		super();
-		setFormFieldFactory(new SchuelerFormFields());
+		setFormFieldFactory(new SchuelerVerwaltenFormFields());
 	}
 	
 	@Override
