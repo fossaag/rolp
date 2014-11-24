@@ -1,7 +1,6 @@
 package org.fossa.rolp.test.util;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.fossa.rolp.data.klasse.KlasseLaso;
 import org.fossa.rolp.data.klasse.KlassePojo;
@@ -34,12 +33,7 @@ public class KlassenstufenUtilsTest {
 
 	@Test
 	public void testGetKlassenstufeInvalidEntry() {
-		try {
-			KlassenstufenUtils.getKlassenstufe("ca12");
-			fail("Exception not thrown");
-		} catch (NumberFormatException e) {
-			
-		}
+		assertTrue("must be identical", KlassenstufenUtils.getKlassenstufe("ca12") == 0);
 	}
 
 	@Test
@@ -59,12 +53,7 @@ public class KlassenstufenUtilsTest {
 
 	@Test
 	public void testErhoeheKlassenstufeInvalidEntry() {
-		try {
-			KlassenstufenUtils.erhoeheKlassenstufe("ca12");
-			fail("Exception not thrown");
-		} catch (NumberFormatException e) {
-			
-		}
+		assertTrue("must be identical", KlassenstufenUtils.erhoeheKlassenstufe("ca12").equals("ca12"));
 	}
 	
 	@Test

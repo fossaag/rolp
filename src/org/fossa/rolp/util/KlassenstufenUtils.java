@@ -28,6 +28,9 @@ public class KlassenstufenUtils {
 			return 0;
 		}
 		String klassenstufe = klassenname.substring(0, 1);
+		if (keineKlassenstufeEnthalten(klassenstufe)) {
+			return 0;
+		}
 		if (klassenname.length() > 1) {
 			if (Integer.valueOf(klassenstufe) == 1) {
 				if (klassenname.substring(1, 2).equals("0")) {
@@ -38,8 +41,12 @@ public class KlassenstufenUtils {
 		return Integer.valueOf(klassenstufe);
 	}
 
-	public static String erhoeheKlassenstufe(String klassenname) throws NumberFormatException {
-		Integer neueKlassenstufe = KlassenstufenUtils.getKlassenstufe(klassenname) + 1;
+	public static String erhoeheKlassenstufe(String klassenname) {
+		int klassenstufe = KlassenstufenUtils.getKlassenstufe(klassenname);
+		if (klassenstufe == 0) {
+			return klassenname;
+		}
+		Integer neueKlassenstufe = klassenstufe + 1;
 		if (klassenname.length() == 1) {
 			return neueKlassenstufe.toString();
 		}
@@ -82,5 +89,14 @@ public class KlassenstufenUtils {
 		} else {
 			return 1.3f;
 		}	
+	}
+	
+	private static boolean keineKlassenstufeEnthalten(String klassenstufe) {
+		try {
+			Integer.valueOf(klassenstufe);
+			return false;
+		} catch (NumberFormatException e){
+			return true;
+		}
 	}
 }
