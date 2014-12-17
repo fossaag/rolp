@@ -48,8 +48,11 @@ public class KlasseAnlegenFormFields extends DefaultFieldFactory {
 				select.setItemCaption(klassentyp, klassentyp.getKlassentyp());
 				if (currentKlassentyp != null && klassentyp.getId().equals(currentKlassentyp.getId())) {
 					select.select(klassentyp);
+				} else if (currentKlassentyp == null && klassentyp.isKlassenstufenorientiert()) {
+					select.select(klassentyp);
 				}
-			}			
+			}
+
 			select.setNullSelectionAllowed(false);
 			select.setRequired(true);
 			return select;

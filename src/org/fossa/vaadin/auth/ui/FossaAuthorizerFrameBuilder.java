@@ -17,12 +17,17 @@
 
 package org.fossa.vaadin.auth.ui;
 
+import org.fossa.rolp.data.lehrer.LehrerContainer;
+import org.fossa.rolp.data.lehrer.LehrerLaso;
+import org.fossa.rolp.ui.lehrer.LehrerAnlegen;
+import org.fossa.vaadin.FossaApplication;
 import org.fossa.vaadin.auth.FossaAuthorizer;
 import org.fossa.vaadin.auth.data.FossaUserLaso;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -32,12 +37,15 @@ public class FossaAuthorizerFrameBuilder extends VerticalLayout implements Butto
 	
 	private FossaAuthorizer fossaAuthorizer;
 	private Button logout;
+	private Button editUser;
+	private FossaUserLaso user;
 	
 	public FossaAuthorizerFrameBuilder(FossaAuthorizer fossaAuthorizer, FossaUserLaso user) {
 		this.fossaAuthorizer = fossaAuthorizer;
 		if (user==null) {
 			return;
 		}
+		this.user = user;
 		TextField loginUser = new TextField();
 		loginUser.setValue("Angemeldet als: " + user.getFirstname() + " " + user.getLastname());
 		loginUser.setReadOnly(true);
@@ -46,11 +54,17 @@ public class FossaAuthorizerFrameBuilder extends VerticalLayout implements Butto
 		logout = new Button("Ausloggen");
 		logout.addListener((Button.ClickListener) this);
 		logout.setWidth("150px");
+		editUser = new Button("Benutzerkonto");
+		editUser.addListener((Button.ClickListener) this);
+		editUser.setWidth("150px");
 		setSpacing(true);
 		addComponent(loginUser);
-		addComponent(logout);
+		HorizontalLayout buttonBattery = new HorizontalLayout();
+		buttonBattery.addComponent(editUser);
+		buttonBattery.addComponent(logout);
+		addComponent(buttonBattery);
 		setComponentAlignment(loginUser, Alignment.MIDDLE_RIGHT);
-		setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
+		setComponentAlignment(buttonBattery, Alignment.MIDDLE_RIGHT);
 	}
 	
 	@Override
@@ -58,7 +72,9 @@ public class FossaAuthorizerFrameBuilder extends VerticalLayout implements Butto
 		final Button source = event.getButton();
 		if (source == logout) {
 			fossaAuthorizer.lockApplication();
+		} else if (source == editUser) {
+			LehrerLaso lehrer = LehrerContainer.getLehrerByUser(user);
+			getApplication().getMainWindow().addWindow(new LehrerAnlegen((FossaApplication) getApplication(), lehrer));
 		}
-		
 	}
 }

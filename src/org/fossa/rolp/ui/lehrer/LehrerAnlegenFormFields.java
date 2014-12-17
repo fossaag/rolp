@@ -17,6 +17,7 @@
 
 package org.fossa.rolp.ui.lehrer;
 
+import org.fossa.rolp.data.lehrer.LehrerPojo;
 import org.fossa.vaadin.auth.data.FossaUserLaso;
 import org.fossa.vaadin.auth.data.FossaUserPojo;
 
@@ -42,8 +43,10 @@ public class LehrerAnlegenFormFields extends DefaultFieldFactory {
 		} else if (propertyId.equals(FossaUserPojo.USERNAME_COLUMN)) {
 			field.setCaption("Benutzername: ");
 			field.setRequired(true);
+		} else if (propertyId.equals(LehrerPojo.MAIL_COLUMN)) {
+			field.setCaption("E-Mail: ");
 		} else if (propertyId.equals(FossaUserLaso.FORM_PW_ONE_COLUMN)) {
-			PasswordField passwordfield = new PasswordField("Passwort: ");
+			PasswordField passwordfield = new PasswordField("Neues Passwort: ");
 			passwordfield.setRequired(true);
 			return passwordfield;
 		} else if (propertyId.equals(FossaUserLaso.FORM_PW_TWO_COLUMN)) {

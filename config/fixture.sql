@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `static_config` (
 -- ----------------------------
 -- Records 
 -- ----------------------------
-REPLACE INTO `dynamic_authentication_user` VALUES ('1', 'Schulleiter', '', '21232f297a57a5a743894a0e4a801fc3', 'admin');
-REPLACE INTO `dynamic_lehrer` VALUES ('1', '1', null, true);
+REPLACE INTO `dynamic_authentication_user` VALUES ('1', 'Schulleiter', ' ', '21232f297a57a5a743894a0e4a801fc3', 'admin');
+REPLACE INTO `dynamic_lehrer` VALUES ('1', '1', '', true);
 INSERT INTO `static_fachtyp` VALUES ('1', 'Pflichtfach'), ('2', 'Kurs');
 INSERT INTO `static_klassentyp` VALUES ('1', 'klassenstufenorientiert'), ('2', 'klassenstufenübergreifend');
 INSERT INTO `static_halbjahr` VALUES ('1', '1. Halbjahr'), ('2', '2. Halbjahr');

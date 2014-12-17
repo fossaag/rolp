@@ -34,6 +34,7 @@ public class LehrerContainer extends BeanItemContainer<LehrerLaso> implements Se
 		FossaUserPojo.FIRSTNAME_COLUMN,
 		FossaUserPojo.LASTNAME_COLUMN,
 		FossaUserPojo.USERNAME_COLUMN,
+		LehrerPojo.MAIL_COLUMN,
 		FossaUserLaso.FORM_PW_ONE_COLUMN,
 		FossaUserLaso.FORM_PW_TWO_COLUMN,
 	};
